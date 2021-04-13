@@ -11,7 +11,11 @@ app.use(express.json());
 
 // Rutas
 app.use('/api/auth', require('./routes/auth'));
+app.use('/api/alert', require('./routes/alertas'));
 
-app.listen(process.env.PORT, () => {
-    console.log(`Servidor corriendo en puerto ${process.env.PORT}`);
+app.get('/',(req,res) => {
+    res.send('Hola, si funciono :3');
+});
+app.listen(3000, () => {
+    console.log(`Servidor corriendo en puerto ${3000}`);
 });

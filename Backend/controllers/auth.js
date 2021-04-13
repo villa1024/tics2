@@ -7,9 +7,9 @@ const crearUsuario = async (req, res = response) => {
     const pool = new Pool({
         host: 'localhost',
         user: 'postgres',
-        password: process.env.DATABASEPASSWORD,
-        database: process.env.DATABASE,
-        port: process.env.DATABASEPORT
+        password: 'josepe321',
+        database: 'scchile',
+        port: 5432
     });
     const response = await pool.query('INSERT INTO usuarios (nombre, email, password) VALUES ($1, $2, $3)', [nombre, email, password]);
     console.log(response);
