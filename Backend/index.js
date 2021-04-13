@@ -1,7 +1,11 @@
 const express = require('express');
 require('dotenv').config();
+const cors = require('cors');
 
 const app = express();
+
+// CORS
+app.use(cors());
 
 // Directorio publico
 app.use(express.static('public'));
