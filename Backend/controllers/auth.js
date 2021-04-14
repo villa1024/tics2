@@ -18,7 +18,7 @@ const crearUsuario = async (req, res = response) => {
             port: process.env.DATABASEPORT
         });
         // Validar que no exista
-        const validarid = await pool.query('SELECT id FROM guardia WHERE guardia.id_guard = ($1)', [id]);
+        const validarid = await pool.query('SELECT id_guard FROM guardia WHERE guardia.id_guard = ($1)', [id]);
         if (!validarid.rowCount) { // no existe
             // Encriptar password
             const salt = bcrypt.genSaltSync();
