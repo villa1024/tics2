@@ -78,10 +78,10 @@ const loginUsuario = async (req, res = response) => {
             }
         }
         // Generar JWT
-        const token = await generarJWT(email);
+        const token = await generarJWT(id);
         return res.status(200).json({
             ok: true,
-            email,
+            id,
             token
         });
     } catch (error) {
@@ -96,10 +96,10 @@ const loginUsuario = async (req, res = response) => {
 const revalidadToken = async (req, res = response) => {
     const { email } = req;
     // Generar JWT
-    const token = await generarJWT(email);
+    const token = await generarJWT(id);
     return res.json({
         ok: true,
-        email,
+        id,
         token
     });
 };
