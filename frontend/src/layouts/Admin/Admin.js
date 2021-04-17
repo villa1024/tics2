@@ -10,7 +10,7 @@ import Sidebar from "components/Sidebar/Sidebar.js";
 
 import routes from "routes.js";
 
-import logo from "assets/img/react-logo.png";
+import logo from "assets/img/SCChile.png";
 import { BackgroundColorContext } from "contexts/BackgroundColorContext";
 
 var ps;

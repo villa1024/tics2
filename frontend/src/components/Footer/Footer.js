@@ -38,7 +38,7 @@ function Footer() {
           </NavItem>
         </Nav>
         <div className="copyright">
-          © {new Date().getFullYear()} SCchile
+          © {new Date().getFullYear()} SCChile
         </div>
       </Container>
     </footer>

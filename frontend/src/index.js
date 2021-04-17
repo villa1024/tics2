@@ -8,6 +8,7 @@ import LoginLayout from "layouts/Login/Login.js";
 import "assets/scss/black-dashboard-react.scss";
 import "assets/css/nucleo-icons.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
+//import 'mdbreact/dist/css/mdb.css';
 
 ReactDOM.render(
   <BrowserRouter>
