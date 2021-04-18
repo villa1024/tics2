@@ -3,7 +3,7 @@ const { response } = require('express');
 const { Pool } = require('pg');
 
 const creaAlerta = async (req, res = response) => {
-    const { id_veci, id_guard, fecha_init } = req.body;
+    const {id_veci,id_guard, fecha_init} = req.body;
     const pool = new Pool({
         host: 'localhost',
         user: 'postgres',
@@ -13,9 +13,9 @@ const creaAlerta = async (req, res = response) => {
     });
     const query0 = 'INSERT INTO momento (fecha_init) VALUES ($1)';
     const query = 'INSERT INTO alarma (id_veci,id_guard,id_fecha) VALUES ($1, $2, $3)';
-    await pool.query(query0, [fecha_init]);
+    const respuest = await pool.query(query0, [fecha_init]);
     const fechaident = await pool.query('SELECT id_fecha FROM momento WHERE momento.fecha_init = ($1)', fecha_init)
-    await pool.query(query, [id_veci, id_guard, fechaident]);
+    const response = await pool.query(query, [id_veci,id_guard,fechaident ]);
     res.status(201).json({
         ok: true,
         msg: 'alarma',
