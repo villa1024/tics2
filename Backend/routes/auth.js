@@ -13,9 +13,9 @@ const { validarJWT } = require('../middlewares/validar-jwt');
 
 router.post('/new',
     [ // middlewares
-        check('id', 'Su id es obligatorio').isEmpty(),
-        check('tipo', 'El tipo de guardia es obligatorio').isEmpty(),
-        check('nombre', 'Su nombre es obligatorio').not().isEmpty(),
+        check('id', 'Su id es obligatorio').not().isEmpty(),
+        check('tipo', 'El tipo de guardia es obligatorio').not().isEmpty(),
+        check('nombre', 'Su nombre es obligatorio').not().not().isEmpty(),
         check('password', 'Su contraseña debe tener minimo 6 caracteres').isLength({ min: 6 }),
         validarCampos
     ],
@@ -24,7 +24,7 @@ router.post('/new',
 
 router.post('/',
     [ // middlewares
-        check('id', 'El id es obligatorio').isEmpty(),
+        check('id', 'El id es obligatorio').not().isEmpty(),
         check('password', 'El password es obligatorio').not().isEmpty(),
         validarCampos
     ],

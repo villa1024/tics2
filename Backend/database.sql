@@ -6,3 +6,17 @@ CREATE TABLE usuarios(
     email TEXT,
     password TEXT
 );
+
+CREATE TABLE vecino(
+    id SERIAL PRIMARY KEY,
+    nombre VARCHAR(40),
+    numero TEXT,
+    nombre_numero TEXT
+);
+
+CREATE TABLE guardia(
+    id_guard TEXT,
+    tipo TEXT,
+    nom_guard TEXT,
+    pass_guard TEXT
+);
