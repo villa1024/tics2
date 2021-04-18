@@ -18,7 +18,7 @@ import {
 function Login() {
 
   const [datos, setDatos] = useState({
-    username: '',
+    id: '',
     password: ''
   })
 
@@ -29,9 +29,26 @@ function Login() {
     })
   }
 
-  const enviarDatos = (event) => {
+  const enviarDatos = async event => {
     event.preventDefault();
-    console.log(datos.username + ' ' + datos.password)
+    console.log(datos)
+    try {
+      let config = {
+        method: 'POST',
+        headers: {
+          'Accept': 'aplication/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(datos)
+      }
+      
+      let res = await fetch('http://localhost:4000/api/auth', config)
+      let json = await res.json()
+
+      console.log(json)
+    } catch (error) {
+
+    }
   }
 
   return (
@@ -52,7 +69,7 @@ function Login() {
                           defaultValue=""
                           placeholder="Usuario"
                           type="text"
-                          name="username"
+                          name="id"
                           onChange={handleInputChange}
                         />
                       </FormGroup>
