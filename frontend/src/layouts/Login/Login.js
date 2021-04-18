@@ -17,8 +17,6 @@ import {
 
 function Login() {
 
-  const {register, errors, handleSubmit} = useForm();
-
   const [datos, setDatos] = useState({
     username: '',
     password: ''
