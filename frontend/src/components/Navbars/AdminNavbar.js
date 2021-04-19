@@ -15,7 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React, { useContext } from "react";
 // nodejs library that concatenates classes
 import classNames from "classnames";
 
@@ -39,7 +39,12 @@ import {
   ModalHeader,
 } from "reactstrap";
 
+import { useDispatch } from "react-redux";
+
+import { startLogout } from "actions/auth";
+
 function AdminNavbar(props) {
+
   const [collapseOpen, setcollapseOpen] = React.useState(false);
   const [modalSearch, setmodalSearch] = React.useState(false);
   const [color, setcolor] = React.useState("navbar-transparent");
@@ -71,6 +76,12 @@ function AdminNavbar(props) {
   const toggleModalSearch = () => {
     setmodalSearch(!modalSearch);
   };
+
+  const dispatch = useDispatch();
+  const logout = () => {
+    dispatch(startLogout());
+  };
+
   return (
     <>
       <Navbar className={classNames("navbar-absolute", color)} expand="lg">
@@ -168,7 +179,7 @@ function AdminNavbar(props) {
                   </NavLink>
                   <DropdownItem divider tag="li" />
                   <NavLink tag="li">
-                    <DropdownItem className="nav-item">Cerrar sesión</DropdownItem>
+                    <DropdownItem className="nav-item" onClick={logout}>Cerrar sesión</DropdownItem>
                   </NavLink>
                 </DropdownMenu>
               </UncontrolledDropdown>

@@ -93,8 +93,8 @@ const loginUsuario = async (req, res = response) => {
     }
 };
 
-const revalidadToken = async (req, res = response) => {
-    const { email } = req;
+const revalidarToken = async (req, res = response) => {
+    const { id } = req;
     // Generar JWT
     const token = await generarJWT(id);
     return res.json({
@@ -107,5 +107,5 @@ const revalidadToken = async (req, res = response) => {
 module.exports = {
     crearUsuario,
     loginUsuario,
-    revalidadToken
+    revalidarToken
 };
