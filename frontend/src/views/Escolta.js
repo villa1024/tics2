@@ -37,7 +37,7 @@ function Escolta() {
                   <tbody>
                     <tr>
                       <td>Diego Saavedra</td>
-                      <td>Isla Portezuelo 123456789</td>
+                      <td>Isla Portezuelo 596</td>
                       <td>Llegada</td>
                       <td>Sabado, 17 de abril 2021</td>
                       <td>23:34</td>

@@ -15,7 +15,7 @@ const creaAlerta = async (req, res = response) => {
     const query = 'INSERT INTO alarma (id_veci,id_guard,id_fecha) VALUES ($1, $2, $3)';
     const respuest = await pool.query(query0, [fecha_init]);
     const fechaident = await pool.query('SELECT id_fecha FROM momento WHERE momento.fecha_init = ($1)', fecha_init)
-    const response = await pool.query(query, [id_veci,id_guard,fechaident ]);
+    const responsee = await pool.query(query, [id_veci,id_guard,fechaident ]);
     res.status(201).json({
         ok: true,
         msg: 'alarma',
