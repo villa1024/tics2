@@ -39,6 +39,7 @@ const crearVecino = async (req, res = response) => {
             ok: false,
             msg: 'Hable con el administrador'
         });
+    }    
 };
 
 module.exports = {
