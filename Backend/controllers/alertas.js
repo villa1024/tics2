@@ -45,7 +45,7 @@ const getCurrentAlertas = async (req, res = response) => {
         database: 'scchile',
         port: 5432
     });
-    await pool.query('SELECT id_alarm, direccion FOM alarma, vecino, momento WHERE vecino.id_veci = alarma.id_veci and alarma.id_fecha = momento.id_fecha and momento.fecha_end is null', (err, rows, fields) => {
+    await pool.query('SELECT id_alarm, direccion, nom_numero, numero, nom_numero0, numero0 FROM alarma, vecino, momento, contacto WHERE ((vecino.id_veci = contacto.id_veci) and (alarma.id_veci = vecino.id_veci) and (momento.id_fecha = alarma.id_fecha) and (momento.fecha_end is null));', (err, rows, fields) => {
         res.json(rows.rows);
     });
 };
