@@ -42,6 +42,22 @@ const crearVecino = async (req, res = response) => {
     }    
 };
 
+
+const getallvecinos = async (req, res = response) => {
+    const pool = new Pool({
+        host: 'localhost',
+        user: 'postgres',
+        password: process.env.DATABASEPASSWORD,
+        database: process.env.DATABASE,
+        port: process.env.PORT
+    });
+    await pool.query('SELECT vecino.id_veci, direccion, nom_numero, numero FROM vecino, contacto WHERE vecino.id_veci = contacto.id_veci', (err, rows, fields) => {
+        res.json(rows.rows);
+    });
+};
+
+
 module.exports = {
-    crearVecino
+    crearVecino,
+    getallvecinos
 };
