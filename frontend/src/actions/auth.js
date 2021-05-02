@@ -1,5 +1,5 @@
 import swal from "sweetalert";
-import { fetchSinToken, fetchConToken } from "../helpers/fetch";
+import { fetchSinToken } from "../helpers/fetch";
 import { types } from '../types/types';
 
 export const startLogin = (id, password) => {
@@ -18,25 +18,6 @@ export const startLogin = (id, password) => {
         }
     };
 };
-
-export const startChecking = () => {
-    return async (dispatch) => {
-        const resp = await fetchConToken('api/auth/renew');
-        const body = await resp.json();
-        if (body.ok) {
-            localStorage.setItem('token', body.token);
-            localStorage.setItem('token-comienzo', new Date().getTime());
-            dispatch(login({
-                id: body.id
-            }));
-        }
-        else {
-            dispatch(checkingFinish());
-        }
-    }
-}
-
-const checkingFinish = () => ({type: types.authCheckingFinish});
 
 const login = (id) => ({
     type: types.authLogin,

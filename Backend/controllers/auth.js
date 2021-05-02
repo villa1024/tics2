@@ -18,13 +18,13 @@ const crearUsuario = async (req, res = response) => {
             port: process.env.DATABASEPORT
         });
         // Validar que no exista
-        const validarid = await pool.query('SELECT id_guard FROM guardia WHERE guardia.id_guard = ($1)', [id]);
+        const validarid = await pool.query('SELECT id_guard FROM usuario_guardia WHERE usuario_guardia.id_guard = ($1)', [id]);
         if (!validarid.rowCount) { // no existe
             // Encriptar password
             const salt = bcrypt.genSaltSync();
             const passwordHash = bcrypt.hashSync(password, salt);
             // Guardar usuario
-            await pool.query('INSERT INTO guardia (id_guard, tipo, nom_guard, pass_guard) VALUES ($1, $2, $3, $4)', [id, tipo, nombre, passwordHash]);
+            await pool.query('INSERT INTO usuario_guardia (id_guard, tipo, nom_guard, pass_guard) VALUES ($1, $2, $3, $4)', [id, tipo, nombre, passwordHash]);
             // Generar JWT VERIFICAR LINEA INFERIOR PARA MODIFICACIÓN DE QUERY
             const token = await generarJWT(id);
             return res.status(201).json({
@@ -59,7 +59,7 @@ const loginUsuario = async (req, res = response) => {
             port: process.env.DATABASEPORT
         });
         // Validar que el ID exista
-        const validarid = await pool.query('SELECT id_guard FROM guardia WHERE guardia.id_guard = ($1)', [id]);
+        const validarid = await pool.query('SELECT id_guard FROM usuario_guardia WHERE usuario_guardia.id_guard = ($1)', [id]);
         if (!validarid.rowCount) {
             return res.status(400).json({
                 ok: false,
@@ -67,7 +67,7 @@ const loginUsuario = async (req, res = response) => {
             });
         }
         // Confirmamos las contraseñas
-        const passwordHash = await pool.query('SELECT pass_guard FROM guardia WHERE guardia.id_guard = ($1)', [id]);
+        const passwordHash = await pool.query('SELECT pass_guard FROM usuario_guardia WHERE usuario_guardia.id_guard = ($1)', [id]);
         if (passwordHash.rowCount) { // se encontro el passwordHash
             const validarPassword = bcrypt.compareSync(password, passwordHash.rows[0].pass_guard);
             if (!validarPassword) {

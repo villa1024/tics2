@@ -14,7 +14,7 @@ CREATE TABLE vecino(
     nombre_numero TEXT
 );
 
-CREATE TABLE guardia(
+CREATE TABLE usuario_guardia(
     id_guard TEXT,
     tipo TEXT,
     nom_guard TEXT,

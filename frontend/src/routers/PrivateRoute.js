@@ -1,13 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Redirect, Route } from 'react-router-dom/cjs/react-router-dom.min';
+import { Redirect, Route } from 'react-router-dom/cjs/react-router-dom';
 
 export const PrivateRoute = ({
     isAuthenticated,
     component: Component,
     ...rest
 }) => {
-    localStorage.setItem('ultimoPath', rest.location.pathname);
     return (
         <Route {...rest}
             component={(props) => (

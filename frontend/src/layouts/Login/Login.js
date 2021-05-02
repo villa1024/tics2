@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 
 // reactstrap components
@@ -8,7 +8,6 @@ import {
   CardHeader,
   CardBody,
   CardFooter,
-  CardText,
   FormGroup,
   Form,
   Input,
@@ -17,7 +16,6 @@ import {
 } from "reactstrap";
 
 import { startLogin } from "../../actions/auth";
-import { startChecking } from "../../actions/auth";
 
 function Login({ history }) {
 

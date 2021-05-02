@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Redirect, Route } from 'react-router-dom/cjs/react-router-dom.min';
+import { Redirect, Route } from 'react-router-dom';
 
 export const PublicRoute = ({
     isAuthenticated,
@@ -10,9 +10,9 @@ export const PublicRoute = ({
     return (
         <Route {...rest}
             component={(props) => (
-                (!isAuthenticated)
-                    ? (<Component {...props} />)
-                    : (<Redirect to='/admin' />)
+                (isAuthenticated)
+                    ? (<Redirect to='/admin' />)
+                    : (<Component {...props} />)
             )}
         />
     );

@@ -6,9 +6,9 @@ const dbConecction = async () => {
         const pool = new Pool({
             host: 'localhost',
             user: 'postgres',
-            password: 'josepe321',
-            database: 'scchile',
-            port: 5432
+            password: process.env.DATABASEPASSWORD,
+            database: process.env.DATABASE,
+            port: process.env.DATABASEPORT
         });
         return pool;
     } catch (error) {

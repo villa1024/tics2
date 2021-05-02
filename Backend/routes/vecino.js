@@ -17,11 +17,6 @@ router.get('/getallvecinos', getallvecinos);
 
 router.post('/crearVecino',
     [
-        check('id', 'El id es obligatorio').not().isEmpty(),
-        check('dir', 'La direccion es obligatoria').not().isEmpty(),
-        check('numdir', 'La direccion es obligatoria').not().isEmpty(),
-        check('nombre1', 'La direccion es obligatoria').not().isEmpty(),
-        check('tel1', 'La direccion es obligatoria').not().isEmpty().isLength({min: 12}),
         validarCampos
     ],
      crearVecino
