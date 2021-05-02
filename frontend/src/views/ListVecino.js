@@ -3,8 +3,6 @@ import React, { useEffect, useState } from "react";
 import { Card, CardHeader, CardBody, Row, Col } from "reactstrap";
 // reactstrap components
 import {
-  Button,
-  CardTitle,
   Table,
 } from "reactstrap";
 
@@ -29,6 +27,7 @@ function ListVecino() {
       .then(response => response.json())
       .then(dataJSON => {
         const { data } = dataJSON;
+        console.log(data);
         setVecinos(data);
       })
       .catch(err => {

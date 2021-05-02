@@ -1,12 +1,6 @@
 import React from 'react';
 import {
     Button,
-    Card,
-    CardHeader,
-    CardBody,
-    CardTitle,
-    Table,
-    Col,
 } from "reactstrap";
 
 export const ListVecinoFila = ({vecino}) => {
