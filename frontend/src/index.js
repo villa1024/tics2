@@ -8,7 +8,7 @@ import "assets/css/nucleo-icons.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
 import { store } from "./store/store";
-import { TicsApp } from "TicsApp";
+import { TicsApp } from "./TicsApp";
 
 ReactDOM.render(
   <Provider store={store}>

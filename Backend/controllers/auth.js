@@ -13,7 +13,7 @@ const crearUsuario = async (req, res = response) => {
         const pool = new Pool({
             host: 'localhost',
             user: 'postgres',
-            password: 'josepe321',
+            password: 'tics2',
             database: 'scchile',
             port: 5432
         });
@@ -54,7 +54,7 @@ const loginUsuario = async (req, res = response) => {
         const pool = new Pool({
             host: 'localhost',
             user: 'postgres',
-            password: 'josepe321',
+            password: 'tics2',
             database: 'scchile',
             port: 5432
         });

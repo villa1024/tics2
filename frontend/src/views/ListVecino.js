@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
-
 import { Card, CardHeader, CardBody, Row, Col } from "reactstrap";
 // reactstrap components
 import {
   Table,
 } from "reactstrap";
-import ActualizarVeci from "./ActualizarVeci";
 
+import swal from 'sweetalert';
+
+import { clienteAxios } from "helpers/axios";
 import { ListVecinoFila } from "./ListVecinoFila";
 
 function ListVecino() {
@@ -15,6 +16,10 @@ function ListVecino() {
 
   // Consulta a la API
   useEffect(() => {
+    fetchVecinos();
+  }, []);
+
+  const fetchVecinos = () => {
     let request = new Request('http://localhost:4000/api/vecino/getallvecinos', {
       method: 'GET',
       mode: 'cors',
@@ -28,13 +33,49 @@ function ListVecino() {
       .then(response => response.json())
       .then(dataJSON => {
         const { data } = dataJSON;
-        console.log(data);
         setVecinos(data);
       })
       .catch(err => {
         console.error(err);
       })
-  }, []);
+  }
+
+  const handleInputDelete = (id_veci) => {
+    swal("Seguro que desea eliminar al vecino? Esta acción no puede revertirse...", {
+      buttons: {
+        cancel: "Cancelar",
+        aceptar: {
+          text: "Borrar",
+          value: "borrar",
+        },
+      },
+    })
+      .then(async (value) => {
+        switch (value) {
+          case "borrar":
+            // codigo para borrar
+            await clienteAxios.delete(`/api/vecino/deleteVecino/${id_veci}`, {
+              headers: {
+                'x-token': localStorage.getItem('token')
+              }
+            });
+            swal("Bien!", "El vecino ha sido borrado", "success");
+            setVecinos(vecinos.filter(vecino => vecino.id_veci !== id_veci));
+            break;
+          default:
+            swal("Cancelado!");
+        }
+      });
+    // console.log(id_veci);
+    // const { data } = await clienteAxios.post('/api/vecino/crearVecino', {}, {
+    //   headers: {
+    //     'x-token': localStorage.getItem('token') || ''
+    //   }
+    // });
+    // if (data.ok) {
+    //   swal("Perfecto!", 'El vecino ha sido eliminado', "success");
+    // }
+  };
 
   if (vecinos === undefined) return <h1 className="my-4 text-center bg-blue">CARGANDO VECINOS, POR FAVOR ESPERE...</h1>;
 
@@ -66,6 +107,9 @@ function ListVecino() {
                         <ListVecinoFila
                           key={vecino.id_veci}
                           vecino={vecino}
+                          handleInputDelete={handleInputDelete}
+                          fetchVecinos={fetchVecinos}
+                          setVecinos={setVecinos}
                         />
                       ))
                     }

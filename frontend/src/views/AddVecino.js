@@ -38,13 +38,26 @@ function AddVecino() {
 
   const enviarDatos = async e => {
     e.preventDefault();
-    const { data } = await clienteAxios.post('/api/vecino/crearVecino', datos, {
-      headers: {
-        'x-token': localStorage.getItem('token') || ''
+    try {
+      const { data } = await clienteAxios.post('/api/vecino/crearVecino', datos, {
+        headers: {
+          'x-token': localStorage.getItem('token') || ''
+        }
+      });
+      if (data.ok) {
+        swal("Perfecto!", data.msg, "success");
       }
-    });
-    if (data.ok) {
-      swal("Perfecto!", 'El vecino ha sido agregado', "success");
+      setDatos({
+        id_veci: '',
+        direccion: '',
+        numero: '',
+        nom_numero: '',
+        numero0: '',
+        nom_numero0: '',
+      })
+    } catch (error) {
+      swal("Error!", 'No ha sido posible ingresar al vecino, pruebe cambiando la Identificación', "error");
+      console.log('No ha sido posible ingresar al vecino, pruebe cambiando la Identificación');
     }
   };
 

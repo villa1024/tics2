@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const generarJWT = (id) => {
     return new Promise((resolve, reject) => {
         const payload = { id }
-        jwt.sign(payload, 'firma', {
+        jwt.sign(payload, 'firma_tics2_secreta', {
             expiresIn: '2h'
         }, (err, token) => {
             if (err) {

@@ -9,7 +9,7 @@ const router = Router();
 
 const { validarCampos } = require('../middlewares/validar-campos');
 const { validarJWT } = require('../middlewares/validar-jwt');
-const { crearVecino, getallvecinos } = require('../controllers/vecino');
+const { crearVecino, getallvecinos, deleteVecino, actualizarVecino } = require('../controllers/vecino');
 
 router.use(validarJWT);
 
@@ -21,5 +21,9 @@ router.post('/crearVecino',
     ],
      crearVecino
 );
+
+router.delete('/deleteVecino/:id_veci', deleteVecino);
+
+router.put('/actualizarVecino', actualizarVecino);
 
 module.exports = router;
