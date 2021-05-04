@@ -26,7 +26,8 @@ app.use(express.json());
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/alert', require('./routes/alertas'));
 app.use('/api/vecino', require('./routes/vecino'));
+//app.use('/api/escolta', require('./routes/escolta'));
 
-app.listen(process.env.PORT, () => {
-    console.log(`Servidor corriendo en puerto ${process.env.PORT}`);
+app.listen(4000, () => {
+    console.log(`Servidor corriendo en puerto ${4000}`);
 });

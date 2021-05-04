@@ -13,9 +13,9 @@ const crearUsuario = async (req, res = response) => {
         const pool = new Pool({
             host: 'localhost',
             user: 'postgres',
-            password: process.env.DATABASEPASSWORD,
-            database: process.env.DATABASE,
-            port: process.env.DATABASEPORT
+            password: 'josepe321',
+            database: 'scchile',
+            port: 5432
         });
         // Validar que no exista
         const validarid = await pool.query('SELECT id_guard FROM usuario_guardia WHERE usuario_guardia.id_guard = ($1)', [id]);
@@ -54,9 +54,9 @@ const loginUsuario = async (req, res = response) => {
         const pool = new Pool({
             host: 'localhost',
             user: 'postgres',
-            password: process.env.DATABASEPASSWORD,
-            database: process.env.DATABASE,
-            port: process.env.DATABASEPORT
+            password: 'josepe321',
+            database: 'scchile',
+            port: 5432
         });
         // Validar que el ID exista
         const validarid = await pool.query('SELECT id_guard FROM usuario_guardia WHERE usuario_guardia.id_guard = ($1)', [id]);

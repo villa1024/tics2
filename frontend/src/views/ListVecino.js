@@ -5,6 +5,7 @@ import { Card, CardHeader, CardBody, Row, Col } from "reactstrap";
 import {
   Table,
 } from "reactstrap";
+import ActualizarVeci from "./ActualizarVeci";
 
 import { ListVecinoFila } from "./ListVecinoFila";
 
