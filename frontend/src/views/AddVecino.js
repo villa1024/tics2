@@ -38,6 +38,10 @@ function AddVecino() {
 
   const enviarDatos = async e => {
     e.preventDefault();
+    if (id_veci === '') {
+      console.log('id vacio');
+      return swal("Error!", 'El campo Identificación no debe estar vacio', "error");
+    }
     try {
       const { data } = await clienteAxios.post('/api/vecino/crearVecino', datos, {
         headers: {
