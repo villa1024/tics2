@@ -2,28 +2,29 @@ require('dotenv').config();
 const { response } = require('express');
 const { Pool } = require('pg');
 
-const creaAlerta = async (req, res = response) => {
-    const {id_veci,id_guard, fecha_init} = req.body;
+const crearAlarma = async (req, res = response) => {
+    // Creamos la conexion a la BDD
     const pool = new Pool({
         host: 'localhost',
         user: 'postgres',
-        password: 'tics2',
-        database: 'scchile',
-        port: 5432
+        password: process.env.DATABASEPASSWORD,
+        database: process.env.DATABASE,
+        port: process.env.DATABASEPORT
     });
-    const query0 = 'INSERT INTO momento (fecha_init) VALUES ($1)';
-    const query = 'INSERT INTO alarma (id_veci,id_guard,id_fecha) VALUES ($1, $2, $3)';
-    const respuest = await pool.query(query0, [fecha_init]);
-    const fechaident = await pool.query('SELECT id_fecha FROM momento WHERE momento.fecha_init = ($1)', fecha_init)
-    const responsee = await pool.query(query, [id_veci,id_guard,fechaident ]);
-    res.status(201).json({
+    // EXTRAER ID DEL TOKEN PARA EVITAR FALSIFICACION DE DATOS
+    const { id } = req;
+    const datos = await pool.query('SELECT * FROM vecino WHERE id_veci = ($1)', [id]);
+    const { id_veci, direccion, name_contact, numb_contact, name_contact2, numb_contact2 } = datos.rows[0];
+    // Creamos una nueva alarma con los datos del vecino
+    await pool.query('INSERT INTO alarma (id_veci, fecha, estado) VALUES ($1, $2, $3)', [id_veci, 'miercoles', 'activa']);
+    return res.status(201).json({
         ok: true,
+        id,
         msg: 'alarma',
     });
 };
 
-
-const getAlertas = async (req, res = response) => {
+const getAlarmas = async (req, res = response) => {
     const pool = new Pool({
         host: 'localhost',
         user: 'postgres',
@@ -35,7 +36,6 @@ const getAlertas = async (req, res = response) => {
         res.json(rows.rows);
     });
 };
-
 
 const getCurrentAlertas = async (req, res = response) => {
     const pool = new Pool({
@@ -51,7 +51,7 @@ const getCurrentAlertas = async (req, res = response) => {
 };
 
 module.exports = {
-    creaAlerta,
-    getAlertas,
+    crearAlarma,
+    getAlarmas,
     getCurrentAlertas
 };

@@ -1,33 +1,86 @@
-import React from "react";
-
-import { Card, CardBody, CardTitle, CardText, Button, Row, Badge, FormGroup, Input, Label, Col } from 'reactstrap';
+import React, { useState } from "react";
+import { Card, CardHeader, CardBody, Row, Col } from "reactstrap";
+// reactstrap components
+import {
+  Table,
+  Button,
+} from "reactstrap";
 
 function Alarm(props) {
+
+  const [alarmas, setAlarmas] = useState([]);
+
   return (
     <>
       <div className="content">
         <Row>
-          <Card style={{ width: '30rem' }}>
-            <CardBody color="danger">
-              <CardTitle>Alarma 34343!
-              <Badge color="danger">Recibido</Badge>
-              </CardTitle>
-              <CardText>  id: AGUI719</CardText>
-              <CardText>  Direccion: las aguilas 719</CardText>
-              <CardText>  Hora de activacion: 15:57 pm</CardText>
-              <CardText>  Contactos <br></br>
-                  <li> <strong>Nombre 1:</strong>  Pepejuan</li>
-                  <li><strong>Telefono 1:</strong> +569676347463</li>
-                  <li><strong>Nombre 2:</strong> Diego</li>
-                  <li><strong>Telefono 2:</strong> +569676354321</li>
-              </CardText>
-              <FormGroup className="has-success">
-                <Label for="success" className="control-label">Comentarios</Label>
-                <Col><Input type="text" name="success" id="success" /></Col>
-                <Col><Button color="success">Success</Button></Col>
-              </FormGroup>
-            </CardBody>
-          </Card>
+          <Col md="12">
+            <Card>
+              <CardHeader>
+                <h5 className="title">Lista Vecinos</h5>
+              </CardHeader>
+              <CardBody>
+                <Table className="tablesorter">
+                  <thead className="text-primary">
+                    <tr>
+                      <th>ID ALARMA</th>
+                      <th>ID VECINO</th>
+                      <th>DIRECCIÓN</th>
+                      <th>NOMBRE CONTACTO 1</th>
+                      <th>NUMERO CONTACTO 1</th>
+                      <th>NOMBRE CONTACTO 2</th>
+                      <th>NUMERO CONTACTO 2</th>
+                      <th>FECHA</th>
+                      <th>ESTADO</th>
+                      <th className="text-center">ACCIONES</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>1</td>
+                      <td>LJ45</td>
+                      <td>PAJARITOS #980</td>
+                      <td>XAVIER</td>
+                      <td>+56989898989</td>
+                      <td>XAVIER</td>
+                      <td>+56989898989</td>
+                      <td>HOY</td>
+                      <td>ACTIVA</td>
+                      <td className="text-center">
+                        <Button
+                          className="btn-fill"
+                          color="success"
+                          type="submit"
+                        >
+                          CONFIRMAR
+                      </Button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>1</td>
+                      <td>LJ45</td>
+                      <td>PAJARITOS #980</td>
+                      <td>XAVIER</td>
+                      <td>+56989898989</td>
+                      <td>XAVIER</td>
+                      <td>+56989898989</td>
+                      <td>HOY</td>
+                      <td>ACTIVA</td>
+                      <td className="text-center">
+                        <Button
+                          className="btn-fill"
+                          color="success"
+                          type="submit"
+                        >
+                          CONFIRMAR
+                      </Button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </Table>
+              </CardBody>
+            </Card>
+          </Col>
         </Row>
       </div>
     </>

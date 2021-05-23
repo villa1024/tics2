@@ -12,13 +12,13 @@ const ActualizarVeci = (props) => {
   const [datos, setDatos] = useState({
     id_veci: props.info.id_veci,
     direccion: props.info.direccion,
-    numero: props.info.numero,
-    nom_numero: props.info.nom_numero,
-    numero0: props.info.numero0,
-    nom_numero0: props.info.nom_numero0,
+    name_contact: props.info.name_contact,
+    numb_contact: props.info.numb_contact,
+    name_contact2: props.info.name_contact2,
+    numb_contact2: props.info.numb_contact2,
   });
   //clase datos para recopilar datos del vecino
-  const { id_veci, direccion, numero, nom_numero, numero0, nom_numero0 } = datos;
+  const { id_veci, direccion, name_contact, numb_contact, name_contact2, numb_contact2 } = datos;
 
   //actualizar datos cuando se inserta informacion en el formulario
   const handleInputChange = (event) => {
@@ -31,7 +31,6 @@ const ActualizarVeci = (props) => {
   //envia los datos a la api con axios.
   const enviarDatos = async e => {
     e.preventDefault();
-    console.log('modificando...');
     try {
       const { data } = await clienteAxios.put('/api/vecino/actualizarVecino', datos, {
         headers: {
@@ -80,19 +79,19 @@ const ActualizarVeci = (props) => {
                 </FormGroup>
                 <FormGroup>
                   <Label for="exampleEmail3">Nombre del Contacto</Label>
-                  <Input type="text" name="nom_numero" value={nom_numero} onChange={handleInputChange} />
+                  <Input type="text" name="name_contact" value={name_contact} onChange={handleInputChange} />
                 </FormGroup>
                 <FormGroup>
                   <Label for="exampleEmail4">Número Telefónico del Contacto</Label>
-                  <Input type="text" name="numero" value={numero} onChange={handleInputChange} />
+                  <Input type="text" name="numb_contact" value={numb_contact} onChange={handleInputChange} />
                 </FormGroup>
                 <FormGroup>
                   <Label for="exampleEmail5">Nombre del Contacto 2</Label>
-                  <Input type="text" name="nom_numero0" value={nom_numero0} onChange={handleInputChange} />
+                  <Input type="text" name="name_contact2" value={name_contact2} onChange={handleInputChange} />
                 </FormGroup>
                 <FormGroup>
                   <Label for="exampleEmail6">Número Telefónico del Contacto 2</Label>
-                  <Input type="text" name="numero0" value={numero0} onChange={handleInputChange} />
+                  <Input type="text" name="numb_contact2" value={numb_contact2} onChange={handleInputChange} />
                 </FormGroup>
               </Form>
             </CardBody>

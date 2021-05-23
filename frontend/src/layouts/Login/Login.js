@@ -26,8 +26,8 @@ function Login({ history }) {
 
   // State
   const [datos, setDatos] = useState({
-    id: '',
-    password: ''
+    id: 'G01',
+    password: '6543210'
   });
   const { id, password } = datos;
 
@@ -89,6 +89,7 @@ function Login({ history }) {
                         placeholder="Usuario"
                         type="text"
                         name="id"
+                        value={id}
                         onChange={handleInputChange}
                       />
                     </FormGroup>
@@ -103,6 +104,7 @@ function Login({ history }) {
                         placeholder="Contraseña"
                         type="password"
                         name="password"
+                        value={password}
                         onChange={handleInputChange}
                       />
                     </FormGroup>
