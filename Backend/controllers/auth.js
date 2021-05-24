@@ -13,9 +13,9 @@ const crearGuardia = async (req, res = response) => {
         const pool = new Pool({
             host: 'localhost',
             user: 'postgres',
-            password: process.env.DATABASEPASSWORD,
-            database: process.env.DATABASE,
-            port: process.env.DATABASEPORT
+        password: 'admin',
+        database: 'scchile',
+        port: 5432
         });
         // Validar que no exista el ID
         const validarid = await pool.query('SELECT id_guard FROM usuario_guardia WHERE id_guard = ($1)', [id]);
@@ -55,9 +55,9 @@ const loginGuardia = async (req, res = response) => {
         const pool = new Pool({
             host: 'localhost',
             user: 'postgres',
-            password: process.env.DATABASEPASSWORD,
-            database: process.env.DATABASE,
-            port: process.env.DATABASEPORT
+        password: 'admin',
+        database: 'scchile',
+        port: 5432
         });
         // Validar que el ID exista
         const validarid = await pool.query('SELECT id_guard FROM usuario_guardia WHERE id_guard = ($1)', [id]);
@@ -101,9 +101,9 @@ const loginVecino = async (req, res = response) => {
         const pool = new Pool({
             host: 'localhost',
             user: 'postgres',
-            password: process.env.DATABASEPASSWORD,
-            database: process.env.DATABASE,
-            port: process.env.DATABASEPORT
+        password: 'admin',
+        database: 'scchile',
+        port: 5432
         });
         // Validamos que el ID del vecino exista
         const validarID = await pool.query('SELECT id_veci FROM usuario_vecino WHERE id_veci = ($1)', [id]);
