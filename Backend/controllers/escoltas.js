@@ -8,9 +8,9 @@ const getAllSoliEscolta = async (req, res = response) => {
         const pool = new Pool({
             host: 'localhost',
             user: 'postgres',
-            password: 'tics2',
-            database: 'scchile',
-            port: 5432
+        password: 'admin',
+        database: 'scchile',
+        port: 5432
         });
         //modificar query para escoltas.
         const query = 'SELECT * from escolta join guardia on escolta.id_guard=guardia.id_guard;';

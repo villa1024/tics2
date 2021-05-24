@@ -9,9 +9,9 @@ const crearVecino = async (req, res = response) => {
         const pool = new Pool({
             host: 'localhost',
             user: 'postgres',
-            password: process.env.DATABASEPASSWORD,
-            database: process.env.DATABASE,
-            port: process.env.DATABASEPORT
+        password: 'admin',
+        database: 'scchile',
+        port: 5432
         });
         // Verificar que el vecino no exista
         const validarid = await pool.query('SELECT id_veci FROM usuario_vecino WHERE id_veci = ($1)', [id_veci]);
@@ -45,9 +45,9 @@ const actualizarVecino = async (req, res = response) => {
         const pool = new Pool({
             host: 'localhost',
             user: 'postgres',
-            password: process.env.DATABASEPASSWORD,
-            database: process.env.DATABASE,
-            port: process.env.DATABASEPORT
+        password: 'admin',
+        database: 'scchile',
+        port: 5432
         });
         // Extraemos ID del guardia para comprobar si tiene privilegios de admin o no
         const { id } = req;
@@ -81,9 +81,9 @@ const getallvecinos = async (req, res = response) => {
         const pool = new Pool({
             host: 'localhost',
             user: 'postgres',
-            password: process.env.DATABASEPASSWORD,
-            database: process.env.DATABASE,
-            port: process.env.DATABASEPORT
+        password: 'admin',
+        database: 'scchile',
+        port: 5432
         });
         const data = await pool.query('SELECT id_veci, direccion, name_contact, numb_contact, name_contact2, numb_contact2 FROM vecino WHERE estado = ($1)', ['activo']);
         return res.status(200).json({
@@ -105,9 +105,9 @@ const deleteVecino = async (req, res = response) => {
         const pool = new Pool({
             host: 'localhost',
             user: 'postgres',
-            password: process.env.DATABASEPASSWORD,
-            database: process.env.DATABASE,
-            port: process.env.DATABASEPORT
+        password: 'admin',
+        database: 'scchile',
+        port: 5432
         });
         // Extraemos ID del guardia para comprobar si tiene privilegios de admin o no
         const { id } = req;

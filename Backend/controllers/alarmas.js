@@ -7,9 +7,9 @@ const crearAlarma = async (req, res = response) => {
     const pool = new Pool({
         host: 'localhost',
         user: 'postgres',
-        password: process.env.DATABASEPASSWORD,
-        database: process.env.DATABASE,
-        port: process.env.DATABASEPORT
+        password: 'admin',
+        database: 'scchile',
+        port: 5432
     });
     // EXTRAER ID DEL TOKEN PARA EVITAR FALSIFICACION DE DATOS
     const { id } = req;
@@ -28,7 +28,7 @@ const getAlarmas = async (req, res = response) => {
     const pool = new Pool({
         host: 'localhost',
         user: 'postgres',
-        password: 'tics2',
+        password: 'admin',
         database: 'scchile',
         port: 5432
     });
@@ -41,7 +41,7 @@ const getCurrentAlertas = async (req, res = response) => {
     const pool = new Pool({
         host: 'localhost',
         user: 'postgres',
-        password: 'tics2',
+        password: 'admin',
         database: 'scchile',
         port: 5432
     });
