@@ -11,7 +11,8 @@ class BotonAlerta extends Component{
     super(props);
     
     this.state = {
-      token:'123'
+      Estado:"",
+      Mensaje:""
     };
     //para no perder contexto del componente
     this.handlefortuna = this.handlefortuna.bind(this);
@@ -20,33 +21,61 @@ class BotonAlerta extends Component{
   //funcion que modifica el valor del alerta
   handlefortuna(valor){
 
-        const {token} = this.state;
-        this.setState({token:valor});
-        console.log('handle:Token',valor,' esta en estado de emergencia')
-      }
+        const {Estado,Mensaje} = this.state;
+        this.setState({Estado:valor});
+        this.setState({Mensaje:'Hemos recibido su alarma, estamos enviado ayuda...'});
+  }
+
+  CrearAlarma = async () =>{
+    console.log('=============================');
+    console.log('Creando alarma...');
+    console.log('=============================');
+    try{
+      //capatar los input
+      const usuario = this.props.alarma.usuario;
+
+      //crear alarma
+      const response= await fetch('http://52.188.69.248:4000/api/alarma/crearAlarma',{
+        method:'POST',
+        //headers para contenidos de lo mensje
+        headers:{
+          'x-token':usuario,
+          'Accept':'application/json',
+          'Content-type':'application/json'
+        }
+      });
+      const data= await response.json();
+      console.log(data);
+      
+    }catch (error){
+      console.log(error);
+    }
+  }
+    
   render(){
     
-    const fortunas=[];
-    //aqui guardar el token desde el login con redux
-    const {token}= this.state;
     
+    //aqui guardar el estado
+    const {Estado,Mensaje}= this.state;
+  
     //despliegues
-    
     const buttonClickedHandler = () => {
+        console.log('===============================================================')
         console.log('Boton:ALerta Activada!!! desde');
         //traigo el token de redux y se lo entrego a el boton
-        this.handlefortuna(this.props.alarma.usuario);
-        console.log(this.props.alarma);
+        this.handlefortuna('Activo');
+        this.CrearAlarma();
         
     }
     return(
       <View style={styles.screen}>
         <TouchableOpacity
           onPress={buttonClickedHandler}
+          //onPress={crearAlarma()}
           style={styles.roundButton}>
           <Text style={styles.texto}>Alarma</Text>
         </TouchableOpacity>
-        <Text style={styles.textoFortuna}>{token}</Text>
+        <Text style={styles.textoMensaje}>{Mensaje}</Text>
       </View>
     );
   }
@@ -62,9 +91,11 @@ const styles = StyleSheet.create({
     color:'white',
     fontSize:20
   },
-  textoFortuna:{
+  textoMensaje:{
+    paddingTop:10,
     color:'black',
-    fontSize:20
+    fontSize:20,
+    textAlign:'center'
   },
   roundButton: {
     color:'red',
