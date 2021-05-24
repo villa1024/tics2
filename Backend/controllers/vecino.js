@@ -86,7 +86,6 @@ const getallvecinos = async (req, res = response) => {
             port: process.env.DATABASEPORT
         });
         const data = await pool.query('SELECT id_veci, direccion, name_contact, numb_contact, name_contact2, numb_contact2 FROM vecino WHERE estado = ($1)', ['activo']);
-        console.log(data.rows);
         return res.status(200).json({
             ok: true,
             data: data.rows
@@ -121,7 +120,7 @@ const deleteVecino = async (req, res = response) => {
         }
         await pool.query('DELETE FROM usuario_vecino WHERE id_veci = ($1)', [id_veci]);
         await pool.query(`UPDATE vecino SET estado = ($1) WHERE id_veci = ($2)`, ['inactivo', id_veci]);
-        
+
     } catch (error) {
         console.log(error);
         return res.status(500).json({
@@ -131,9 +130,58 @@ const deleteVecino = async (req, res = response) => {
     }
 };
 
+const actualizarPassword = async (req, res = response) => {
+    const { id } = req;
+    try {
+        const pool = new Pool({
+            host: 'localhost',
+            user: 'postgres',
+            password: process.env.DATABASEPASSWORD,
+            database: process.env.DATABASE,
+            port: process.env.DATABASEPORT
+        });
+        const { antiguaPassword, nuevaPassword, confirmarPassword } = req.body;
+        const password = await pool.query('SELECT pass_veci FROM usuario_vecino WHERE id_veci = ($1)', [id]);
+        const validarAntiguaPassword = bcrypt.compareSync(antiguaPassword, password.rows[0].pass_veci);
+        if (!validarAntiguaPassword) { // Datos incorrectos
+            return res.status(400).json({
+                ok: false,
+                msg: 'Contraseña antigua incorrecta'
+            });
+        }
+        if (nuevaPassword !== confirmarPassword) {
+            return res.status(400).json({
+                ok: false,
+                msg: 'Las nuevas contraseñas no coinciden'
+            });
+        }
+        // Hasheamos contraseñas
+        const salt = bcrypt.genSaltSync();
+        const passwordHash = bcrypt.hashSync(nuevaPassword, salt);
+        const resp = await pool.query('UPDATE usuario_vecino SET pass_veci = ($1) WHERE id_veci = ($2)', [passwordHash, id]);
+        if (resp.rowCount) {
+            return res.status(200).json({
+                ok: true,
+                msg: 'Contraseña actualizada correctamente'
+            });
+        }
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            ok: false,
+            msg: 'Hable con el administrador'
+        });
+    }
+    return res.status(200).json({
+        ok: true,
+        msg: 'Actualizar contraseña'
+    });
+};
+
 module.exports = {
     crearVecino,
     getallvecinos,
     actualizarVecino,
-    deleteVecino
+    deleteVecino,
+    actualizarPassword
 };
