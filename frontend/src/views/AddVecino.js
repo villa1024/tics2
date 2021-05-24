@@ -22,12 +22,12 @@ function AddVecino() {
   const [datos, setDatos] = useState({
     id_veci: '',
     direccion: '',
-    numero: '',
-    nom_numero: '',
-    numero0: '',
-    nom_numero0: '',
+    name_contact: '',
+    numb_contact: '',
+    name_contact2: '',
+    numb_contact2: '',
   });
-  const { id_veci, direccion, numero, nom_numero, numero0, nom_numero0 } = datos;
+  const { id_veci, direccion, name_contact, numb_contact, name_contact2, numb_contact2 } = datos;
 
   const handleInputChange = (event) => {
     setDatos({
@@ -38,6 +38,7 @@ function AddVecino() {
 
   const enviarDatos = async e => {
     e.preventDefault();
+    console.log(datos)
     if (id_veci === '') {
       console.log('id vacio');
       return swal("Error!", 'El campo Identificación no debe estar vacio', "error");
@@ -54,11 +55,11 @@ function AddVecino() {
       setDatos({
         id_veci: '',
         direccion: '',
-        numero: '',
-        nom_numero: '',
-        numero0: '',
-        nom_numero0: '',
-      })
+        name_contact: '',
+        numb_contact: '',
+        name_contact2: '',
+        numb_contact2: '',
+      });
     } catch (error) {
       swal("Error!", 'No ha sido posible ingresar al vecino, pruebe cambiando la Identificación', "error");
       console.log('No ha sido posible ingresar al vecino, pruebe cambiando la Identificación');
@@ -107,12 +108,12 @@ function AddVecino() {
                   <Row>
                     <Col className="pl-md-1" md="3">
                       <FormGroup>
-                        <label>Número Telefónico del Contacto</label>
+                        <label>Número Telefónico del Contacto 1</label>
                         <Input
                           placeholder="Número Telefónico"
                           type="text"
-                          name="numero"
-                          value={numero}
+                          name="numb_contact"
+                          value={numb_contact}
                           onChange={handleInputChange}
                         />
                       </FormGroup>
@@ -123,8 +124,8 @@ function AddVecino() {
                         <Input
                           placeholder="Nombre"
                           type="text"
-                          name="nom_numero"
-                          value={nom_numero}
+                          name="name_contact"
+                          value={name_contact}
                           onChange={handleInputChange}
                         />
                       </FormGroup>
@@ -137,8 +138,8 @@ function AddVecino() {
                         <Input
                           placeholder="Número Telefónico"
                           type="text"
-                          name="numero0"
-                          value={numero0}
+                          name="numb_contact2"
+                          value={numb_contact2}
                           onChange={handleInputChange}
                         />
                       </FormGroup>
@@ -149,8 +150,8 @@ function AddVecino() {
                         <Input
                           placeholder="Nombre"
                           type="text"
-                          name="nom_numero0"
-                          value={nom_numero0}
+                          name="name_contact2"
+                          value={name_contact2}
                           onChange={handleInputChange}
                         />
                       </FormGroup>

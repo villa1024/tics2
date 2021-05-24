@@ -11,21 +11,21 @@ export const ListVecinoFila = ({ vecino, handleInputDelete, fetchVecinos, setVec
     const [datos] = useState({
         id_veci: vecino.id_veci,
         direccion: vecino.direccion,
-        numero: vecino.numero,
-        nom_numero: vecino.nom_numero,
-        numero0: vecino.numero0,
-        nom_numero0: vecino.nom_numero0,
+        name_contact: vecino.name_contact,
+        numb_contact: vecino.numb_contact,
+        name_contact2: vecino.name_contact2,
+        numb_contact2: vecino.numb_contact2,
     });
-    const { id_veci, direccion, numero, nom_numero, numero0, nom_numero0 } = datos;
+    const { id_veci, direccion, name_contact, numb_contact, name_contact2, numb_contact2 } = datos;
 
     return (
         <tr>
             <td>{id_veci}</td>
             <td>{direccion}</td>
-            <td>{numero}</td>
-            <td>{nom_numero}</td>
-            <td>{numero0}</td>
-            <td>{nom_numero0}</td>
+            <td>{name_contact}</td>
+            <td>{numb_contact}</td>
+            <td>{name_contact2}</td>
+            <td>{numb_contact2}</td>
             <td className="text-center">
                 <ActualizarVeci
                     info={datos}
@@ -44,5 +44,5 @@ export const ListVecinoFila = ({ vecino, handleInputDelete, fetchVecinos, setVec
                 </Button>
             </td>
         </tr>
-    )
+    );
 };

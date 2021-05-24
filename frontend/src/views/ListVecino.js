@@ -38,7 +38,7 @@ function ListVecino() {
       .catch(err => {
         console.error(err);
       })
-  }
+  };
 
   const handleInputDelete = (id_veci) => {
     swal("Seguro que desea eliminar al vecino? Esta acción no puede revertirse...", {
@@ -54,13 +54,17 @@ function ListVecino() {
         switch (value) {
           case "borrar":
             // codigo para borrar
-            await clienteAxios.delete(`/api/vecino/deleteVecino/${id_veci}`, {
-              headers: {
-                'x-token': localStorage.getItem('token')
-              }
-            });
-            swal("Bien!", "El vecino ha sido borrado", "success");
-            setVecinos(vecinos.filter(vecino => vecino.id_veci !== id_veci));
+            try {
+              const resp = await clienteAxios.delete(`/api/vecino/deleteVecino/${id_veci}`, {
+                headers: {
+                  'x-token': localStorage.getItem('token')
+                }
+              });
+              swal("Bien!", "El vecino ha sido borrado", "success");
+              setVecinos(vecinos.filter(vecino => vecino.id_veci !== id_veci));
+            } catch (error) {
+              swal("Error!", "Al parecer no tiene privilegios", "error");
+            }
             break;
           default:
             swal("Cancelado!");
@@ -94,11 +98,11 @@ function ListVecino() {
                     <tr>
                       <th>ID VECINO</th>
                       <th>Dirección</th>
-                      <th>Numero Contacto 1</th>
                       <th>Nombre Contacto 1</th>
-                      <th>Numero Contacto 2</th>
+                      <th>Numero Contacto 1</th>
                       <th>Nombre Contacto 2</th>
-                      <th className="text-center">Boton</th>
+                      <th>Numero Contacto 2</th>
+                      <th className="text-center">Acciones</th>
                     </tr>
                   </thead>
                   <tbody>

@@ -10,7 +10,7 @@ const validarJWT = (req, res = response, next) => {
         });
     }
     try {
-        const { id } = jwt.verify(token, 'firma_tics2_secreta');
+        const { id } = jwt.verify(token, 'PaLaBRa-MagiCA-SECReT@-tiCS2');
         req.id = id;
     } catch (error) {
         return res.status(401).json({
