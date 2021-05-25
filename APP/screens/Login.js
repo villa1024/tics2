@@ -9,6 +9,9 @@ import {
   TextComponent
 } from 'react-native';
 import { Block, Checkbox, Text, Button as GaButton, theme } from 'galio-framework';
+//redux
+import { connect } from 'react-redux';
+import { addUsuario } from './../AlarmaAction';
 
 import { Button, Icon, Input } from '../components';
 import { Images, nowTheme } from '../constants';
@@ -20,9 +23,45 @@ const DismissKeyboard = ({ children }) => (
 );
 
 class Login extends React.Component {
+  constructor(props)
+  {
+    super(props);
+    this.state = {
+      usuario:'',
+      clave:''
+    }
+  }
+
+  Login = async () =>{
+    try{
+      //capatar los input
+      const{usuario} = this.state;
+      const{clave} = this.state;
+      console.log(usuario,' // ',clave);
+
+      //consulta login vecino
+      const response= await fetch('http://52.188.69.248:4000/api/auth/loginVecino',{
+        method:'POST',
+        //headers para contenidos de lo mensje
+        headers:{
+          'Accept':'application/json',
+          'Content-type':'application/json'
+        },
+        body:JSON.stringify({id:usuario,password:clave})
+      });
+
+       const user= await response.json();
+      console.log('respues servidor',user)
+      this.props.addUsuario(user.token);
+      console.log('Nuevo token:',this.props.alarma);
+      
+    }catch (error){
+      console.log(error);
+    }
+    //enviar todos los datos por pos ya que es un login 
+  }
 
   render() {
-
     return (
       <DismissKeyboard>
         <Block flex middle>
@@ -67,6 +106,7 @@ class Login extends React.Component {
                               placeholder="Identificación del Usuario"
                               style={styles.inputs}
                               name="id"
+                              onChangeText={usuario => this.setState({usuario})}
                               //onChange={handleInputChange}
                               iconContent={
                                 <Icon
@@ -93,6 +133,7 @@ class Login extends React.Component {
                             <Input
                               placeholder="Contraseña"
                               secureTextEntry={true}
+                              onChangeText={clave => this.setState({clave})}
                               style={styles.inputs}
                               name="password"
                               //onChange={handleInputChange}
@@ -113,7 +154,9 @@ class Login extends React.Component {
                             color="primary" 
                             round 
                             style={styles.createButton}
-                            onPress={() => this.props.navigation.navigate('PassChange')}
+                            //,() => this.props.navigation.navigate('BotonAlerta')
+                            onPress={this.Login}
+                            //onPress={() => this.props.navigation.navigate('BotonAlerta')}
                             >
                             <Text
                               style={{ fontFamily: 'montserrat-bold' }}
@@ -121,6 +164,21 @@ class Login extends React.Component {
                               color={nowTheme.COLORS.WHITE}
                             >
                               Iniciar Sesión
+                            </Text>
+                          </Button>
+                          <Button 
+                            color="primary" 
+                            round 
+                            style={styles.createButton}
+                            //,() => this.props.navigation.navigate('BotonAlerta')
+                            onPress={() => this.props.navigation.navigate('BotonAlerta')}
+                            >
+                            <Text
+                              style={{ fontFamily: 'montserrat-bold' }}
+                              size={14}
+                              color={nowTheme.COLORS.WHITE}
+                            >
+                              Siguiente
                             </Text>
                           </Button>
                         </Block>
@@ -136,6 +194,16 @@ class Login extends React.Component {
     );
   }
 }
+//redux
+
+const mapStateToProps = (state) => {
+  const { alarma} = state
+  return { alarma }
+};
+const mapDispatchToProps = {  
+    // despacho de acciones simples
+    addUsuario,
+};
 
 const styles = StyleSheet.create({
   imageBackgroundContainer: {
@@ -215,4 +283,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Login;
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

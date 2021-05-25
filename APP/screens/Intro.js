@@ -45,7 +45,7 @@ class Intro extends React.Component {
                     o peligros.
                   </Text>
                 </Block>
-  
+                
                 <Block
                   row
                   style={{
