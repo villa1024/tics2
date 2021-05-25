@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { Card, CardHeader, CardBody, Row, Col } from "reactstrap";
+import swal from 'sweetalert';
 // reactstrap components
 import {
   Table,
 } from "reactstrap";
 
-import swal from 'sweetalert';
-
 import { clienteAxios } from "helpers/axios";
 import { ListVecinoFila } from "./ListVecinoFila";
 
 function ListVecino() {
+
+  const { id } = useSelector(state => state.auth);
 
   const [vecinos, setVecinos] = useState([]);
 
@@ -20,6 +22,7 @@ function ListVecino() {
   }, []);
 
   const fetchVecinos = () => {
+    console.log('consultando vecinos...');
     let request = new Request('http://localhost:4000/api/vecino/getallvecinos', {
       method: 'GET',
       mode: 'cors',
@@ -40,46 +43,15 @@ function ListVecino() {
       })
   };
 
-  const handleInputDelete = (id_veci) => {
-    swal("Seguro que desea eliminar al vecino? Esta acción no puede revertirse...", {
-      buttons: {
-        cancel: "Cancelar",
-        aceptar: {
-          text: "Borrar",
-          value: "borrar",
-        },
-      },
-    })
-      .then(async (value) => {
-        switch (value) {
-          case "borrar":
-            // codigo para borrar
-            try {
-              const resp = await clienteAxios.delete(`/api/vecino/deleteVecino/${id_veci}`, {
-                headers: {
-                  'x-token': localStorage.getItem('token')
-                }
-              });
-              swal("Bien!", "El vecino ha sido borrado", "success");
-              setVecinos(vecinos.filter(vecino => vecino.id_veci !== id_veci));
-            } catch (error) {
-              swal("Error!", "Al parecer no tiene privilegios", "error");
-            }
-            break;
-          default:
-            swal("Cancelado!");
-        }
-      });
-    // console.log(id_veci);
-    // const { data } = await clienteAxios.post('/api/vecino/crearVecino', {}, {
-    //   headers: {
-    //     'x-token': localStorage.getItem('token') || ''
-    //   }
-    // });
-    // if (data.ok) {
-    //   swal("Perfecto!", 'El vecino ha sido eliminado', "success");
-    // }
-  };
+  // console.log(id_veci);
+  // const { data } = await clienteAxios.post('/api/vecino/crearVecino', {}, {
+  //   headers: {
+  //     'x-token': localStorage.getItem('token') || ''
+  //   }
+  // });
+  // if (data.ok) {
+  //   swal("Perfecto!", 'El vecino ha sido eliminado', "success");
+  // }
 
   if (vecinos === undefined) return <h1 className="my-4 text-center bg-blue">CARGANDO VECINOS, POR FAVOR ESPERE...</h1>;
 
@@ -88,10 +60,8 @@ function ListVecino() {
       <div className="content">
         <Row>
           <Col md="12">
+            <h4 className="title"><i className="fas fa-user"></i> ID GUARDIA: {id}</h4>
             <Card>
-              <CardHeader>
-                <h5 className="title">Lista Vecinos</h5>
-              </CardHeader>
               <CardBody>
                 <Table className="tablesorter">
                   <thead className="text-primary">
@@ -111,7 +81,6 @@ function ListVecino() {
                         <ListVecinoFila
                           key={vecino.id_veci}
                           vecino={vecino}
-                          handleInputDelete={handleInputDelete}
                           fetchVecinos={fetchVecinos}
                           setVecinos={setVecinos}
                         />

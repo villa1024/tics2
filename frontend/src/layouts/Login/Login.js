@@ -41,7 +41,7 @@ function Login({ history }) {
   const enviarDatos = event => {
     event.preventDefault();
     dispatch(startLogin(id, password));
-    //dispatch(startLogin(_id, _password));
+    // dispatch(startLogin(_id, _password));
     // console.log(datos)
     // try {
     //   let config = {
@@ -85,7 +85,6 @@ function Login({ history }) {
                     <FormGroup>
                       <label>Nombre de Usuario</label>
                       <Input
-                        defaultValue=""
                         placeholder="Usuario"
                         type="text"
                         name="id"
@@ -100,7 +99,6 @@ function Login({ history }) {
                     <FormGroup>
                       <label>Contraseña</label>
                       <Input
-                        defaultValue=""
                         placeholder="Contraseña"
                         type="password"
                         name="password"

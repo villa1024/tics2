@@ -25,18 +25,6 @@ function Footer() {
   return (
     <footer className="footer">
       <Container fluid>
-        <Nav>
-          <NavItem>
-            <NavLink href="https://www.creative-tim.com/presentation?ref=bdr-user-archive-footer">
-              Acerca de Nosotros
-            </NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink href="https://www.creative-tim.com/blog?ref=bdr-user-archive-footer">
-              Contacto
-            </NavLink>
-          </NavItem>
-        </Nav>
         <div className="copyright">
           © {new Date().getFullYear()} SCChile
         </div>

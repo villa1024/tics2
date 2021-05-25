@@ -1,20 +1,16 @@
 require('dotenv').config();
 const { response } = require('express');
-const { Pool } = require('pg');
 const bcrypt = require('bcryptjs');
+
+const { dbConecction } = require('../database/config');
 
 const crearVecino = async (req, res = response) => {
     const { id_veci, direccion, name_contact, numb_contact, name_contact2, numb_contact2 } = req.body;
     try {
-        const pool = new Pool({
-            host: 'localhost',
-            user: 'postgres',
-        password: 'admin',
-        database: 'scchile',
-        port: 5432
-        });
+        // Creamos la conexion a la BDD
+        const pool = await dbConecction();
         // Verificar que el vecino no exista
-        const validarid = await pool.query('SELECT id_veci FROM usuario_vecino WHERE id_veci = ($1)', [id_veci]);
+        const validarid = await pool.query('SELECT id_veci FROM vecino WHERE id_veci = ($1)', [id_veci]);
         if (!validarid.rowCount) { // No existe, lo guardamos
             const salt = bcrypt.genSaltSync();
             const passwordHash = bcrypt.hashSync('12345', salt);
@@ -42,13 +38,8 @@ const crearVecino = async (req, res = response) => {
 const actualizarVecino = async (req, res = response) => {
     const { id_veci, direccion, name_contact, numb_contact, name_contact2, numb_contact2 } = req.body;
     try {
-        const pool = new Pool({
-            host: 'localhost',
-            user: 'postgres',
-        password: 'admin',
-        database: 'scchile',
-        port: 5432
-        });
+        // Creamos la conexion a la BDD
+        const pool = await dbConecction();
         // Extraemos ID del guardia para comprobar si tiene privilegios de admin o no
         const { id } = req;
         const verificarAdmin = await pool.query('SELECT tipo FROM guardia WHERE id_guard = ($1)', [id]);
@@ -78,13 +69,8 @@ const actualizarVecino = async (req, res = response) => {
 
 const getallvecinos = async (req, res = response) => {
     try {
-        const pool = new Pool({
-            host: 'localhost',
-            user: 'postgres',
-        password: 'admin',
-        database: 'scchile',
-        port: 5432
-        });
+        // Creamos la conexion a la BDD
+        const pool = await dbConecction();
         const data = await pool.query('SELECT id_veci, direccion, name_contact, numb_contact, name_contact2, numb_contact2 FROM vecino WHERE estado = ($1)', ['activo']);
         return res.status(200).json({
             ok: true,
@@ -102,13 +88,8 @@ const getallvecinos = async (req, res = response) => {
 const deleteVecino = async (req, res = response) => {
     const { id_veci } = req.params;
     try {
-        const pool = new Pool({
-            host: 'localhost',
-            user: 'postgres',
-        password: 'admin',
-        database: 'scchile',
-        port: 5432
-        });
+        // Creamos la conexion a la BDD
+        const pool = await dbConecction();
         // Extraemos ID del guardia para comprobar si tiene privilegios de admin o no
         const { id } = req;
         const verificarAdmin = await pool.query('SELECT tipo FROM guardia WHERE id_guard = ($1)', [id]);
@@ -120,7 +101,10 @@ const deleteVecino = async (req, res = response) => {
         }
         await pool.query('DELETE FROM usuario_vecino WHERE id_veci = ($1)', [id_veci]);
         await pool.query(`UPDATE vecino SET estado = ($1) WHERE id_veci = ($2)`, ['inactivo', id_veci]);
-
+        return res.status(200).json({
+            ok: true,
+            msg: 'Vecino eliminado'
+        });
     } catch (error) {
         console.log(error);
         return res.status(500).json({
@@ -133,13 +117,8 @@ const deleteVecino = async (req, res = response) => {
 const actualizarPassword = async (req, res = response) => {
     const { id } = req;
     try {
-        const pool = new Pool({
-            host: 'localhost',
-            user: 'postgres',
-            password: process.env.DATABASEPASSWORD,
-            database: process.env.DATABASE,
-            port: process.env.DATABASEPORT
-        });
+        // Creamos la conexion a la BDD
+        const pool = await dbConecction();
         const { antiguaPassword, nuevaPassword, confirmarPassword } = req.body;
         const password = await pool.query('SELECT pass_veci FROM usuario_vecino WHERE id_veci = ($1)', [id]);
         const validarAntiguaPassword = bcrypt.compareSync(antiguaPassword, password.rows[0].pass_veci);

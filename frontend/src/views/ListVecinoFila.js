@@ -1,11 +1,13 @@
+import { clienteAxios } from "helpers/axios";
 import React, { useState } from "react";
 import {
     Button,
 } from "reactstrap";
+import swal from "sweetalert";
 
 import ActualizarVeci from './ActualizarVeci';
 
-export const ListVecinoFila = ({ vecino, handleInputDelete, fetchVecinos, setVecinos }) => {
+export const ListVecinoFila = ({ vecino, fetchVecinos, setVecinos }) => {
     //hook vecino, para actualizar datos
 
     const [datos] = useState({
@@ -17,6 +19,40 @@ export const ListVecinoFila = ({ vecino, handleInputDelete, fetchVecinos, setVec
         numb_contact2: vecino.numb_contact2,
     });
     const { id_veci, direccion, name_contact, numb_contact, name_contact2, numb_contact2 } = datos;
+
+    const handleInputDelete = (id_veci) => {
+        swal("Seguro que desea eliminar al vecino? Esta acción no puede revertirse...", {
+            buttons: {
+                cancel: "Cancelar",
+                aceptar: {
+                    text: "Borrar",
+                    value: "borrar",
+                },
+            },
+        })
+            .then(async (value) => {
+                switch (value) {
+                    case "borrar":
+                        // codigo para borrar
+                        try {
+                            const { data } = await clienteAxios.delete(`/api/vecino/deleteVecino/${id_veci}`, {
+                                headers: {
+                                    'x-token': localStorage.getItem('token')
+                                }
+                            });
+                            if (data.ok) {
+                                swal("Bien!", 'Vecino eliminado', "success");
+                                setVecinos(fetchVecinos());
+                            }
+                        } catch (error) {
+                            swal("Error!", "Al parecer no tiene privilegios", "error");
+                        }
+                        break;
+                    default:
+                        swal("Cancelado!");
+                }
+            });
+    };
 
     return (
         <tr>

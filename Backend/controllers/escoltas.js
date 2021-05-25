@@ -1,17 +1,12 @@
 require('dotenv').config();
 const { response } = require('express');
-const { Pool } = require('pg');
-const bcrypt = require('bcryptjs');
+
+const { dbConecction } = require('../database/config');
 
 const getAllSoliEscolta = async (req, res = response) => {
     try {
-        const pool = new Pool({
-            host: 'localhost',
-            user: 'postgres',
-        password: 'admin',
-        database: 'scchile',
-        port: 5432
-        });
+        // Creamos la conexion a la BDD
+        const pool = await dbConecction();
         //modificar query para escoltas.
         const query = 'SELECT * from escolta join guardia on escolta.id_guard=guardia.id_guard;';
         const data = await pool.query(query)

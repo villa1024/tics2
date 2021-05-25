@@ -1,22 +1,16 @@
 require('dotenv').config();
 const { response } = require('express');
-const { Pool } = require('pg');
 const bcrypt = require('bcryptjs');
 
 const { generarJWT } = require('../helpers/jwt');
+const { dbConecction } = require('../database/config');
 
 const crearGuardia = async (req, res = response) => {
     // Extraemos datos
     const { id, tipo, name_guard, rut, password } = req.body; // Tambien debe venir el ID del administrador
     try {
         // Creamos la conexion a la BDD
-        const pool = new Pool({
-            host: 'localhost',
-            user: 'postgres',
-        password: 'admin',
-        database: 'scchile',
-        port: 5432
-        });
+        const pool = await dbConecction();
         // Validar que no exista el ID
         const validarid = await pool.query('SELECT id_guard FROM usuario_guardia WHERE id_guard = ($1)', [id]);
         if (!validarid.rowCount) { // No existe
@@ -52,13 +46,7 @@ const loginGuardia = async (req, res = response) => {
     const { id, password } = req.body;
     try {
         // Creamos la conexion a la BDD
-        const pool = new Pool({
-            host: 'localhost',
-            user: 'postgres',
-        password: 'admin',
-        database: 'scchile',
-        port: 5432
-        });
+        const pool = await dbConecction();
         // Validar que el ID exista
         const validarid = await pool.query('SELECT id_guard FROM usuario_guardia WHERE id_guard = ($1)', [id]);
         if (!validarid.rowCount) {
@@ -98,13 +86,7 @@ const loginVecino = async (req, res = response) => {
     const { id, password } = req.body;
     try {
         // Creamos la conexion a la BDD
-        const pool = new Pool({
-            host: 'localhost',
-            user: 'postgres',
-        password: 'admin',
-        database: 'scchile',
-        port: 5432
-        });
+        const pool = await dbConecction();
         // Validamos que el ID del vecino exista
         const validarID = await pool.query('SELECT id_veci FROM usuario_vecino WHERE id_veci = ($1)', [id]);
         if (!validarID.rowCount) { // NO EXISTE

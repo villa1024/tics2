@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import swal from 'sweetalert';
 
 // reactstrap components
@@ -19,6 +20,8 @@ import { clienteAxios } from "helpers/axios";
 
 function AddVecino() {
 
+  const { id } = useSelector(state => state.auth);
+
   const [datos, setDatos] = useState({
     id_veci: '',
     direccion: '',
@@ -38,7 +41,6 @@ function AddVecino() {
 
   const enviarDatos = async e => {
     e.preventDefault();
-    console.log(datos)
     if (id_veci === '') {
       console.log('id vacio');
       return swal("Error!", 'El campo Identificación no debe estar vacio', "error");
@@ -72,10 +74,8 @@ function AddVecino() {
         <Form onSubmit={enviarDatos}>
           <Row>
             <Col md="12">
+              <h4 className="title"><i className="fas fa-user"></i> ID GUARDIA: {id}</h4>
               <Card>
-                <CardHeader>
-                  <h5 className="title">Añadir Vecino</h5>
-                </CardHeader>
                 <CardBody>
                   <Row>
                     <Col className="pr-md-1" md="2">
