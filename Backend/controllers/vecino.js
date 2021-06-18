@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs');
 const { dbConecction } = require('../database/config');
 
 const crearVecino = async (req, res = response) => {
-    const { id_veci, direccion, name_contact, numb_contact, name_contact2, numb_contact2 } = req.body;
+    const { id_veci, direccion, nombre_vecino, telefono_vecino, name_contact, numb_contact, name_contact2, numb_contact2 } = req.body;
     try {
         // Creamos la conexion a la BDD
         const pool = await dbConecction();
@@ -14,7 +14,7 @@ const crearVecino = async (req, res = response) => {
         if (!validarid.rowCount) { // No existe, lo guardamos
             const salt = bcrypt.genSaltSync();
             const passwordHash = bcrypt.hashSync('12345', salt);
-            await pool.query('INSERT INTO vecino (id_veci, direccion, name_contact, numb_contact, name_contact2, numb_contact2, estado) VALUES ($1, $2, $3, $4, $5, $6, $7)', [id_veci, direccion, name_contact, numb_contact, name_contact2, numb_contact2, 'activo']);
+            await pool.query('INSERT INTO vecino (id_veci, direccion, nombre_vecino, telefono_vecino, name_contact, numb_contact, name_contact2, numb_contact2, estado) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)', [id_veci, direccion, nombre_vecino, telefono_vecino, name_contact, numb_contact, name_contact2, numb_contact2, 'activo']);
             await pool.query('INSERT INTO usuario_vecino (id_veci, pass_veci) VALUES ($1, $2)', [id_veci, passwordHash]);
             // await pool.query('INSERT INTO contacto (id_veci, numero, nom_numero, numero0, nom_numero0) VALUES ($1, $2, $3, $4, $5)', [id_veci, numero, nom_numero, numero0, nom_numero0]);
             return res.status(201).json({
@@ -71,7 +71,7 @@ const getallvecinos = async (req, res = response) => {
     try {
         // Creamos la conexion a la BDD
         const pool = await dbConecction();
-        const data = await pool.query('SELECT id_veci, direccion, name_contact, numb_contact, name_contact2, numb_contact2 FROM vecino WHERE estado = ($1)', ['activo']);
+        const data = await pool.query('SELECT id_veci, direccion, nombre_vecino, telefono_vecino, name_contact, numb_contact, name_contact2, numb_contact2 FROM vecino WHERE estado = ($1)', ['activo']);
         return res.status(200).json({
             ok: true,
             data: data.rows

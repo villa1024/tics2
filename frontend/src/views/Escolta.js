@@ -2,7 +2,6 @@ import React from "react";
 
 // reactstrap components
 import {
-  Button,
   Card,
   CardHeader,
   CardBody,
@@ -12,6 +11,9 @@ import {
 } from "reactstrap";
 
 function Escolta() {
+
+  
+
   return (
     <>
       <div className="content">

@@ -24,9 +24,9 @@ app.use(express.json());
 
 // Rutas
 app.use('/api/auth', require('./routes/auth'));
-app.use('/api/alarma/crearAlarma', require('./routes/alarma'));
+app.use('/api/alarma', require('./routes/alarma'));
 app.use('/api/vecino', require('./routes/vecino'));
-//app.use('/api/escolta', require('./routes/escolta'));
+app.use('/api/escolta', require('./routes/escoltas'));
 
 app.listen(4000, () => {
     console.log(`Servidor corriendo en puerto ${4000}`);

@@ -8,6 +8,7 @@ export const HistAlarmFila = ({ alarma }) => {
             <td>{alarma.id_guard}</td>
             <td>{alarma.direccion}</td>
             <td>{alarma.fecha}</td>
+            <td>{alarma.comentario}</td>
         </tr>
     )
 };

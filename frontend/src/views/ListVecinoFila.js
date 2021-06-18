@@ -13,12 +13,14 @@ export const ListVecinoFila = ({ vecino, fetchVecinos, setVecinos }) => {
     const [datos] = useState({
         id_veci: vecino.id_veci,
         direccion: vecino.direccion,
+        nombre_vecino: vecino.nombre_vecino,
+        telefono_vecino: vecino.telefono_vecino,
         name_contact: vecino.name_contact,
         numb_contact: vecino.numb_contact,
         name_contact2: vecino.name_contact2,
         numb_contact2: vecino.numb_contact2,
     });
-    const { id_veci, direccion, name_contact, numb_contact, name_contact2, numb_contact2 } = datos;
+    const { id_veci, direccion, nombre_vecino, telefono_vecino, name_contact, numb_contact, name_contact2, numb_contact2 } = datos;
 
     const handleInputDelete = (id_veci) => {
         swal("Seguro que desea eliminar al vecino? Esta acción no puede revertirse...", {
@@ -58,6 +60,8 @@ export const ListVecinoFila = ({ vecino, fetchVecinos, setVecinos }) => {
         <tr>
             <td>{id_veci}</td>
             <td>{direccion}</td>
+            <td>{nombre_vecino}</td>
+            <td>{telefono_vecino}</td>
             <td>{name_contact}</td>
             <td>{numb_contact}</td>
             <td>{name_contact2}</td>

@@ -1,16 +1,49 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Card, CardHeader, CardBody, Row, Col } from "reactstrap";
-import swal from 'sweetalert';
+import { Card, CardBody, Row, Col } from "reactstrap";
+
 // reactstrap components
 import {
   Table,
 } from "reactstrap";
 
-import { clienteAxios } from "helpers/axios";
 import { ListVecinoFila } from "./ListVecinoFila";
+import sound from '../audio/SonidoAlerta.mp3';
 
 function ListVecino() {
+
+  // Alarmas
+  const [alarmas, setAlarmas] = useState([]);
+  let api = true;
+  const fetchAlarmas = () => {
+    if (api) {
+      console.log('consultando api en vista alarmas...');
+      let request = new Request('http://localhost:4000/api/alarma/getAlarmas', {
+        method: 'GET',
+        mode: 'cors',
+        credentials: 'omit',
+        referrerPolicy: 'no-referrer',
+        headers: {
+          'x-token': localStorage.getItem('token') || ''
+        }
+      });
+      fetch(request)
+        .then(response => response.json())
+        .then(dataJSON => {
+          const { data } = dataJSON;
+          setAlarmas(data);
+        })
+        .catch(err => {
+          console.error(err);
+        })
+    }
+  };
+  useEffect(() => {
+    setInterval(() => {
+      fetchAlarmas();
+    }, 3000);
+    return () => api = false;
+  }, []);
 
   const { id } = useSelector(state => state.auth);
 
@@ -57,17 +90,31 @@ function ListVecino() {
 
   return (
     <>
+      {
+        (alarmas === undefined || alarmas.length !== 0)
+          ? <audio src={sound} autoPlay loop></audio>
+          : null
+      }
       <div className="content">
         <Row>
           <Col md="12">
             <h4 className="title"><i className="fas fa-user"></i> ID GUARDIA: {id}</h4>
             <Card>
               <CardBody>
-                <Table className="tablesorter">
+                {
+                  (alarmas.length !== 0)
+                    ? <div className="alert alert-danger text-center" role="alert">
+                      USTED CONTIENE ALARMAS NUEVAS
+                    </div>
+                    : null
+                }
+                <Table className="tablesorter table-responsive">
                   <thead className="text-primary">
                     <tr>
                       <th>ID VECINO</th>
                       <th>Dirección</th>
+                      <th>NOMBRE VECINO</th>
+                      <th>TELEFONO VECINO</th>
                       <th>Nombre Contacto 1</th>
                       <th>Numero Contacto 1</th>
                       <th>Nombre Contacto 2</th>

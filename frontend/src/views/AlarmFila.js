@@ -1,17 +1,17 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import {
     Button,
 } from "reactstrap";
 import swal from 'sweetalert';
 
 import { clienteAxios } from "helpers/axios";
+import Comentario from './Comentario';
 
 export const AlarmFila = ({ alarma, fetchAlarmas }) => {
 
     const confirmarAlarma = async (id_alarm) => {
         try {
-            const { data } = await clienteAxios.post('/api/alarma/confirmarAlarma', {id_alarm}, {
+            const { data } = await clienteAxios.post('/api/alarma/confirmarAlarma', { id_alarm }, {
                 headers: {
                     'x-token': localStorage.getItem('token') || ''
                 }
@@ -28,9 +28,14 @@ export const AlarmFila = ({ alarma, fetchAlarmas }) => {
         }
     };
 
-    const terminarAlarma = async (id_alarm) => {
+    const terminarAlarma = async (id_alarm, comentario) => {
+        // Validar que haya comentario
+        if (comentario === '') {
+            swal("Error!", 'Debe agregar un comentario', "error");
+            return;
+        }
         try {
-            const { data } = await clienteAxios.post('/api/alarma/terminarAlarma', {id_alarm}, {
+            const { data } = await clienteAxios.post('/api/alarma/terminarAlarma', { id_alarm, comentario }, {
                 headers: {
                     'x-token': localStorage.getItem('token') || ''
                 }
@@ -61,8 +66,7 @@ export const AlarmFila = ({ alarma, fetchAlarmas }) => {
             <td><p className='text-primary text-uppercase'>{alarma.estado}</p></td>
             <td className="text-center">
                 <Button
-                    className="btn-fill"
-                    className={alarma.estado === 'confirmada' ? 'disabled' : ''}
+                    className={alarma.estado === 'btn-fill confirmada' ? 'btn-fill disabled' : ''}
                     color="success"
                     type="submit"
                     onClick={() => confirmarAlarma(alarma.id_alarm)}
@@ -71,15 +75,10 @@ export const AlarmFila = ({ alarma, fetchAlarmas }) => {
                 </Button>
             </td>
             <td className="text-center">
-                <Button
-                    className="btn-fill"
-                    className={alarma.estado === 'activa' ? 'disabled' : ''}
-                    color="success"
-                    type="submit"
-                    onClick={() => terminarAlarma(alarma.id_alarm)}
-                >
-                    TERMINAR
-                </Button>
+                <Comentario
+                    alarma={alarma}
+                    terminarAlarma={terminarAlarma}
+                />
             </td>
         </tr>
     );

@@ -24,7 +24,7 @@ const crearAlarma = async (req, res = response) => {
                 msg: 'Usted ya contiene una alarma activa'
             });
         }
-        moment.locale('es-mx');
+        moment.locale('mx');
         const datos = await pool.query('SELECT * FROM vecino WHERE id_veci = ($1)', [id]);
         const { id_veci, direccion, name_contact, numb_contact, name_contact2, numb_contact2 } = datos.rows[0];
         // Creamos una nueva alarma con los datos del vecino
@@ -44,8 +44,6 @@ const crearAlarma = async (req, res = response) => {
 };
 
 const getAlarmas = async (req, res = response) => {
-    // Creamos la conexion a la BDD
-    const pool = await dbConecction();
     try {
         // Creamos la conexion a la BDD
         const pool = await dbConecction();
@@ -86,7 +84,7 @@ const getHistAlarm = async (req, res = response) => {
                 msg: 'Ha ocurrido un error inesperado, hable con el admin'
             });
         }
-        const datos = await pool.query('SELECT id_alarm, alarma.id_veci, alarma.id_guard, fecha, alarma.estado, direccion FROM alarma, vecino WHERE alarma.id_veci = vecino.id_veci AND alarma.estado = ($1)', ['terminada']);
+        const datos = await pool.query('SELECT id_alarm, alarma.id_veci, alarma.id_guard, fecha, alarma.estado, direccion, comentario FROM alarma, vecino WHERE alarma.id_veci = vecino.id_veci AND alarma.estado = ($1)', ['terminada']);
         return res.status(200).json({
             ok: false,
             data: datos.rows
@@ -98,10 +96,6 @@ const getHistAlarm = async (req, res = response) => {
             msg: 'Hable con el administrador'
         });
     }
-    return res.status(200).json({
-        ok: true,
-        data: []
-    })
 };
 
 const confirmarAlarma = async (req, res = response) => {
@@ -162,8 +156,8 @@ const terminarAlarma = async (req, res = response) => {
             });
         }
         // Extraer la info del post
-        const { id_alarm } = req.body;
-        const datos = await pool.query('UPDATE alarma SET estado = ($1) WHERE id_alarm = ($2)', ['terminada', id_alarm]);
+        const { id_alarm, comentario } = req.body;
+        await pool.query('UPDATE alarma SET estado = ($1), comentario = ($2) WHERE id_alarm = ($3)', ['terminada', comentario, id_alarm]);
         return res.status(200).json({
             ok: true,
             msg: 'Terminar alarma'

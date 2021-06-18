@@ -1,12 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import swal from 'sweetalert';
-
 // reactstrap components
 import {
   Button,
   Card,
-  CardHeader,
   CardBody,
   CardFooter,
   FormGroup,
@@ -17,20 +15,57 @@ import {
 } from "reactstrap";
 
 import { clienteAxios } from "helpers/axios";
+import sound from '../audio/SonidoAlerta.mp3';
 
 function AddVecino() {
+
+  // Alarmas
+  const [alarmas, setAlarmas] = useState([]);
+  let api = true;
+  const fetchAlarmas = () => {
+    if (api) {
+      console.log('consultando api en vista alarmas...');
+      let request = new Request('http://localhost:4000/api/alarma/getAlarmas', {
+        method: 'GET',
+        mode: 'cors',
+        credentials: 'omit',
+        referrerPolicy: 'no-referrer',
+        headers: {
+          'x-token': localStorage.getItem('token') || ''
+        }
+      });
+      fetch(request)
+        .then(response => response.json())
+        .then(dataJSON => {
+          const { data } = dataJSON;
+          setAlarmas(data);
+        })
+        .catch(err => {
+          console.error(err);
+        })
+    }
+  };
+
+  useEffect(() => {
+    setInterval(() => {
+      fetchAlarmas();
+    }, 3000);
+    return () => api = false;
+  }, []);
 
   const { id } = useSelector(state => state.auth);
 
   const [datos, setDatos] = useState({
     id_veci: '',
     direccion: '',
+    nombre_vecino: '',
+    telefono_vecino: '',
     name_contact: '',
     numb_contact: '',
     name_contact2: '',
     numb_contact2: '',
   });
-  const { id_veci, direccion, name_contact, numb_contact, name_contact2, numb_contact2 } = datos;
+  const { id_veci, direccion, nombre_vecino, telefono_vecino, name_contact, numb_contact, name_contact2, numb_contact2 } = datos;
 
   const handleInputChange = (event) => {
     setDatos({
@@ -56,6 +91,8 @@ function AddVecino() {
       }
       setDatos({
         id_veci: '',
+        nombre_vecino: '',
+        telefono_vecino: '',
         direccion: '',
         name_contact: '',
         numb_contact: '',
@@ -70,6 +107,11 @@ function AddVecino() {
 
   return (
     <>
+      {
+        (alarmas === undefined || alarmas.length !== 0)
+          ? <audio src={sound} autoPlay loop></audio>
+          : null
+      }
       <div className="content">
         <Form onSubmit={enviarDatos}>
           <Row>
@@ -77,6 +119,13 @@ function AddVecino() {
               <h4 className="title"><i className="fas fa-user"></i> ID GUARDIA: {id}</h4>
               <Card>
                 <CardBody>
+                  {
+                    (alarmas.length !== 0)
+                      ? <div className="alert alert-danger text-center" role="alert">
+                        USTED CONTIENE ALARMAS NUEVAS
+                      </div>
+                      : null
+                  }
                   <Row>
                     <Col className="pr-md-1" md="2">
                       <FormGroup>
@@ -86,6 +135,32 @@ function AddVecino() {
                           type="text"
                           name="id_veci"
                           value={id_veci}
+                          onChange={handleInputChange}
+                        />
+                      </FormGroup>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col className="pr-md-1" md="2">
+                      <FormGroup>
+                        <label>Nombre vecino</label>
+                        <Input
+                          placeholder="Nombre vecino"
+                          type="text"
+                          name="nombre_vecino"
+                          value={nombre_vecino}
+                          onChange={handleInputChange}
+                        />
+                      </FormGroup>
+                    </Col>
+                    <Col className="pr-md-1" md="2">
+                      <FormGroup>
+                        <label>Telefono vecino</label>
+                        <Input
+                          placeholder="Telefono vecino"
+                          type="text"
+                          name="telefono_vecino"
+                          value={telefono_vecino}
                           onChange={handleInputChange}
                         />
                       </FormGroup>
@@ -161,7 +236,7 @@ function AddVecino() {
                 <CardFooter>
                   <Button className="btn-fill" color="primary" type="submit">
                     Enviar
-                </Button>
+                  </Button>
                 </CardFooter>
               </Card>
             </Col>
