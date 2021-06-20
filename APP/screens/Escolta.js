@@ -6,9 +6,11 @@ import {
   StatusBar,
   TouchableWithoutFeedback,
   Keyboard,
-  TextComponent
+  TextComponent,
+  Alert
 } from 'react-native';
 import { Block, Checkbox, Text, Button as GaButton, theme } from 'galio-framework';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { Button, Icon, Input } from '../components';
 import { Images, nowTheme } from '../constants';
@@ -46,18 +48,11 @@ class Escolta extends React.Component {
     }
   }
 
-  getStorage = () => {
-    AsyncStorage.getItem('token')
-    .then((value) => {
-     store.dispatch(addUsuario(value));
-  
-    })
-  }
-
-  Login = async () =>{
+  ActivarEscolta = async () =>{
     try{
       //capatar los input
-      const{Id} = this.state;
+      const Id = await AsyncStorage.getItem('usuario');
+      console.log(Id)
       const{Mod} = this.state;
       const{Fecha} = this.state;
       const{Hora} = this.state;
@@ -75,15 +70,37 @@ class Escolta extends React.Component {
         body:JSON.stringify({id:Id,modalidad:Mod.label,fecha:Fecha,hora:Hora,dir:Dir})
       });
   
-       const user= await response.json();
-      console.log('respues servidor',user)
-      this.props.addUsuario(user.token);
-      console.log('Nuevo token:',this.props.alarma);
+      const res= await response.json();
+      console.log('Respuesta del servidor:',res)
       
     }catch (error){
       console.log(error);
     }
     //enviar todos los datos por pos ya que es un login 
+  }
+
+  CrearEscolta = async () =>{
+    console.log('=============================');
+    console.log('Creando Escolta...');
+    console.log('=============================');
+
+    Alert.alert(
+      "Confirmación de Escolta",
+      "¿Estas seguro de que los datos son correctos?",
+      [
+        {
+          text: "Cancelar",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        { text: "Confirmar", onPress: () => {
+            console.log("OK Pressed");
+            this.ActivarEscolta();
+          }
+        }
+      ],
+      { cancelable: false }
+    );
   }
 
   render() {
@@ -216,7 +233,7 @@ class Escolta extends React.Component {
                             <Text
                               style={{ fontFamily: 'montserrat-bold' }}
                               size={14}
-                              onPress={this.Login}
+                              onPress={this.CrearEscolta}
                               color={nowTheme.COLORS.WHITE}
                             >
                               Solicitar Escolta

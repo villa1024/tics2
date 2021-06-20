@@ -1,7 +1,7 @@
 import 'react-native-gesture-handler';
 import React,{ useState}  from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { StyleSheet } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { Block, GalioProvider } from 'galio-framework';
@@ -58,8 +58,7 @@ export default class App extends React.Component {
       return (
         //provider entrega acceso a store a todos los componentes
         <Provider store={store}>
-          {console.log(this.getMyObject() )
-          }
+
         <GalioProvider theme={nowTheme}>
           <NavigationContainer>
             <Drawer.Navigator>
@@ -98,16 +97,6 @@ _handleFinishLoading = () => {
   }
 };
 
-getMyObject = async () => {
-  try {
-    const jsonValue = await AsyncStorage.getItem('usuario')
-    return jsonValue != null ? JSON.parse(jsonValue) : null
-  } catch(e) {
-    // read error
-  }
 
-  console.log('Done.')
-
-}
 
 }

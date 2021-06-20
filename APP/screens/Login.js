@@ -52,8 +52,10 @@ class Login extends React.Component {
 
        const user= await response.json();
       console.log('respues servidor',user)
-      usuarioString= JSON.stringify(user);
-      await AsyncStorage.setItem('usuario', user);
+      await AsyncStorage.setItem('usuario', user.id);
+      await AsyncStorage.setItem('token', user.token);
+      //const value = await AsyncStorage.getItem('usuario')
+      //console.log(value)
       this.props.navigation.navigate('Inicio');
       
     }catch (error){
