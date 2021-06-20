@@ -10,7 +10,6 @@ import {
 } from 'react-native';
 import { Block, Checkbox, Text, Button as GaButton, theme } from 'galio-framework';
 //redux
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { connect } from 'react-redux';
 import { addUsuario } from './../AlarmaAction';
 
@@ -52,8 +51,8 @@ class Login extends React.Component {
 
        const user= await response.json();
       console.log('respues servidor',user)
-      usuarioString= JSON.stringify(user);
-      await AsyncStorage.setItem('usuario', user);
+      //usuarioString= JSON.stringify(user);
+      //await AsyncStorage.setItem('usuario', user);
       this.props.navigation.navigate('Inicio');
       
     }catch (error){

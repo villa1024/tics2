@@ -85,6 +85,25 @@ const getallvecinos = async (req, res = response) => {
     }
 };
 
+const getInfoVecino = async (req, res = response) => {
+    try {
+        // Creamos la conexion a la BDD
+        const pool = await dbConecction();
+        const { id_veci} = req.params;
+        const data = await pool.query('SELECT id_veci, direccion, nombre_vecino, telefono_vecino, name_contact, numb_contact, name_contact2, numb_contact2 FROM vecino WHERE id_veci= ($1)', [id_veci]);
+        return res.status(200).json({
+            ok: true,
+            data: data.rows
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            ok: false,
+            msg: 'Hable con el administrador'
+        });
+    }
+};
+
 const deleteVecino = async (req, res = response) => {
     const { id_veci } = req.params;
     try {
@@ -162,5 +181,6 @@ module.exports = {
     getallvecinos,
     actualizarVecino,
     deleteVecino,
-    actualizarPassword
+    actualizarPassword,
+    getInfoVecino
 };

@@ -9,11 +9,12 @@ const router = Router();
 
 const { validarCampos } = require('../middlewares/validar-campos');
 const { validarJWT } = require('../middlewares/validar-jwt');
-const { crearVecino, getallvecinos, deleteVecino, actualizarVecino, actualizarPassword } = require('../controllers/vecino');
+const { crearVecino, getallvecinos, deleteVecino, actualizarVecino, actualizarPassword,getInfoVecino} = require('../controllers/vecino');
 
 router.use(validarJWT);
 
 router.get('/getallvecinos', getallvecinos);
+router.get('/getInfoVecino/:id_veci', getInfoVecino);
 
 router.post('/crearVecino',
     [
