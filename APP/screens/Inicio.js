@@ -1,11 +1,11 @@
 import React, { useState, useEffect, Component } from 'react';
 import { render } from 'react-dom';
-import {View, Text, StyleSheet, TouchableOpacity, Button} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity,Alert} from 'react-native';
 
 //redux
 import { connect } from 'react-redux';
 
-class BotonAlerta extends Component{
+class Inicio extends Component{
 
   constructor(props){
     super(props);
@@ -26,10 +26,8 @@ class BotonAlerta extends Component{
         this.setState({Mensaje:'Hemos recibido su alarma, estamos enviado ayuda...'});
   }
 
-  CrearAlarma = async () =>{
-    console.log('=============================');
-    console.log('Creando alarma...');
-    console.log('=============================');
+
+  postAlarma = async () =>{
     try{
       //capatar los input
       const usuario = this.props.alarma.usuario;
@@ -40,16 +38,45 @@ class BotonAlerta extends Component{
         //headers para contenidos de lo mensje
         headers:{
           'x-token':usuario,
-          'Accept':'application/json',
+          'Accept': 'application/json, text/plain, *',
           'Content-type':'application/json'
         }
       });
       const data= await response.json();
       console.log(data);
+      this.handlefortuna('Activo');
+      if(data.msg){
+        Alert.alert(data.msg);
+      }
       
     }catch (error){
       console.log(error);
     }
+  }
+
+
+  CrearAlarma = async () =>{
+    console.log('=============================');
+    console.log('Creando alarma...');
+    console.log('=============================');
+
+    Alert.alert(
+      "Confirmación de alarma activada",
+      "Confirma la alerta para enviar una patrulla en tu ayuda.",
+      [
+        {
+          text: "Cancelar",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        { text: "Confirmar", onPress: () => {
+            console.log("OK Pressed");
+            this.postAlarma();
+          }
+        }
+      ],
+      { cancelable: false }
+    );
   }
     
   render(){
@@ -63,7 +90,6 @@ class BotonAlerta extends Component{
         console.log('===============================================================')
         console.log('Boton:ALerta Activada!!! desde');
         //traigo el token de redux y se lo entrego a el boton
-        this.handlefortuna('Activo');
         this.CrearAlarma();
         
     }
@@ -76,15 +102,6 @@ class BotonAlerta extends Component{
           <Text style={styles.texto}>Alarma</Text>
         </TouchableOpacity>
         <Text style={styles.textoMensaje}>{Mensaje}</Text>
-        <View>
-          <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('Escolta')}
-          >
-            <Text>
-              Hola
-            </Text>
-          </TouchableOpacity>
-        </View>
       </View>
     );
   }
@@ -98,7 +115,7 @@ const styles = StyleSheet.create({
   },
   texto:{
     color:'white',
-    fontSize:20
+    fontSize:40
   },
   textoMensaje:{
     paddingTop:10,
@@ -125,4 +142,4 @@ const mapStateToProps = (state) => {
   return { alarma }
 };
 
-export default connect(mapStateToProps)(BotonAlerta);
+export default connect(mapStateToProps)(Inicio);

@@ -55,6 +55,8 @@ class Login extends React.Component {
       this.props.addUsuario(user.token);
       console.log('Nuevo token:',this.props.alarma);
       
+      this.props.navigation.navigate('Inicio');
+      
     }catch (error){
       console.log(error);
     }
@@ -164,21 +166,6 @@ class Login extends React.Component {
                               color={nowTheme.COLORS.WHITE}
                             >
                               Iniciar Sesión
-                            </Text>
-                          </Button>
-                          <Button 
-                            color="primary" 
-                            round 
-                            style={styles.createButton}
-                            //,() => this.props.navigation.navigate('BotonAlerta')
-                            onPress={() => this.props.navigation.navigate('BotonAlerta')}
-                            >
-                            <Text
-                              style={{ fontFamily: 'montserrat-bold' }}
-                              size={14}
-                              color={nowTheme.COLORS.WHITE}
-                            >
-                              Siguiente
                             </Text>
                           </Button>
                         </Block>
