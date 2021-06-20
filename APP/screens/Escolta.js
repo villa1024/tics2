@@ -38,21 +38,31 @@ class Escolta extends React.Component {
   {
     super(props);
     this.state = {
-      Mod:'',
+      Id:'',
+      Mod:[],
       Fecha:'',
       Hora:'',
       Dir:''
     }
   }
 
+  getStorage = () => {
+    AsyncStorage.getItem('token')
+    .then((value) => {
+     store.dispatch(addUsuario(value));
+  
+    })
+  }
+
   Login = async () =>{
     try{
       //capatar los input
-      const{Mod} = this.state.Mod;
+      const{Id} = this.state;
+      const{Mod} = this.state;
       const{Fecha} = this.state;
       const{Hora} = this.state;
       const{Dir} = this.state;
-      console.log(Fecha,' // ',Hora, ' // ',Dir, '//', Mod);
+      console.log(Id,' // ',Fecha,' // ',Hora, ' // ',Dir, '//', Mod.label);
   
       //consulta login vecino
       const response= await fetch('http://52.188.69.248:4000/api/auth/loginVecino',{
@@ -62,7 +72,7 @@ class Escolta extends React.Component {
           'Accept':'application/json',
           'Content-type':'application/json'
         },
-        body:JSON.stringify({modalidad:Mod,fecha:Fecha,hora:Hora,dir:Dir})
+        body:JSON.stringify({id:Id,modalidad:Mod.label,fecha:Fecha,hora:Hora,dir:Dir})
       });
   
        const user= await response.json();
