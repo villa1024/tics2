@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React,{ useState}  from 'react';
-import AsyncStorage from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -58,18 +58,16 @@ export default class App extends React.Component {
       return (
         //provider entrega acceso a store a todos los componentes
         <Provider store={store}>
-          {//console.log(this.getStorage())
+          {console.log(this.getMyObject() )
           }
         <GalioProvider theme={nowTheme}>
           <NavigationContainer>
             <Drawer.Navigator>
-
                   <Drawer.Screen name="Intro" component={Intro}/>
                   <Drawer.Screen name="Login" component={Login}/>
                   <Drawer.Screen name="Inicio" component={Inicio} />
                   <Drawer.Screen name="Escolta" component={Escolta}/>
                   <Drawer.Screen name="Contactos" component={Contactos}/>
-                
             </Drawer.Navigator>
           </NavigationContainer>
         </GalioProvider>
@@ -100,12 +98,16 @@ _handleFinishLoading = () => {
   }
 };
 
-getStorage = () => {
-  AsyncStorage.getItem('token')
-  .then((value) => {
-   store.dispatch(addUsuario(value));
-    
-  })
+getMyObject = async () => {
+  try {
+    const jsonValue = await AsyncStorage.getItem('usuario')
+    return jsonValue != null ? JSON.parse(jsonValue) : null
+  } catch(e) {
+    // read error
+  }
+
+  console.log('Done.')
+
 }
 
 }
