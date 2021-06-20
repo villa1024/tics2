@@ -18,6 +18,7 @@ import PassChange from './screens/PassChange';
 import BotonAlerta from './screens/BotonAlerta';
 import Contactos from './screens/Contactos';
 import Home from './screens/Home';
+import Escolta from './screens/Escolta';
 
 import * as Font from 'expo-font';
 import { Images, articles, nowTheme } from './constants';
@@ -77,6 +78,10 @@ export default class App extends React.Component {
                   <Stack.Screen
                     name="Contactos"
                     component={Contactos}
+                  />
+                  <Stack.Screen
+                    name="Escolta"
+                    component={Escolta}
                   />
                 </Stack.Navigator>
               </Block>

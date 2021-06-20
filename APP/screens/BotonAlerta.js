@@ -1,6 +1,6 @@
 import React, { useState, useEffect, Component } from 'react';
 import { render } from 'react-dom';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, Button} from 'react-native';
 
 //redux
 import { connect } from 'react-redux';
@@ -76,6 +76,15 @@ class BotonAlerta extends Component{
           <Text style={styles.texto}>Alarma</Text>
         </TouchableOpacity>
         <Text style={styles.textoMensaje}>{Mensaje}</Text>
+        <View>
+          <TouchableOpacity
+            onPress={() => this.props.navigation.navigate('Escolta')}
+          >
+            <Text>
+              Hola
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
