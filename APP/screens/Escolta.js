@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   StyleSheet,
   ImageBackground,
@@ -6,38 +6,59 @@ import {
   StatusBar,
   TouchableWithoutFeedback,
   Keyboard,
-  TextComponent
+  TextComponent,
+  Alert
 } from 'react-native';
 import { Block, Checkbox, Text, Button as GaButton, theme } from 'galio-framework';
-//redux
-import { connect } from 'react-redux';
-import { addUsuario } from './../AlarmaAction';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import { Button, Icon, Input } from '../components';
 import { Images, nowTheme } from '../constants';
 
+import RadioButtonRN from 'radio-buttons-react-native';
+
 const { width, height } = Dimensions.get('screen');
+
+const data = [
+  {
+    label: 'Llegada',
+    accessibilityLabel: 'Your label'
+   },
+   {
+    label: 'Salida',
+    accessibilityLabel: 'Your label'
+   }
+];
 
 const DismissKeyboard = ({ children }) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>{children}</TouchableWithoutFeedback>
 );
 
-class Login extends React.Component {
+class Escolta extends React.Component {
+
   constructor(props)
   {
     super(props);
     this.state = {
-      usuario:'',
-      clave:''
+      Id:'',
+      Mod:[],
+      Fecha:'',
+      Hora:'',
+      Dir:''
     }
   }
-  Login = async () =>{
+
+  ActivarEscolta = async () =>{
     try{
       //capatar los input
-      const{usuario} = this.state;
-      const{clave} = this.state;
-      console.log(usuario,' // ',clave);
-
+      const Id = await AsyncStorage.getItem('usuario');
+      console.log(Id)
+      const{Mod} = this.state;
+      const{Fecha} = this.state;
+      const{Hora} = this.state;
+      const{Dir} = this.state;
+      console.log(Id,' // ',Fecha,' // ',Hora, ' // ',Dir, '//', Mod.label);
+  
       //consulta login vecino
       const response= await fetch('http://52.188.69.248:4000/api/auth/loginVecino',{
         method:'POST',
@@ -46,21 +67,40 @@ class Login extends React.Component {
           'Accept':'application/json',
           'Content-type':'application/json'
         },
-        body:JSON.stringify({id:usuario,password:clave})
+        body:JSON.stringify({id:Id,modalidad:Mod.label,fecha:Fecha,hora:Hora,dir:Dir})
       });
-
-       const user= await response.json();
-      console.log('respues servidor',user)
-      await AsyncStorage.setItem('usuario', user.id);
-      await AsyncStorage.setItem('token', user.token);
-      //const value = await AsyncStorage.getItem('usuario')
-      //console.log(value)
-      this.props.navigation.navigate('Inicio');
+  
+      const res= await response.json();
+      console.log('Respuesta del servidor:',res)
       
     }catch (error){
       console.log(error);
     }
     //enviar todos los datos por pos ya que es un login 
+  }
+
+  CrearEscolta = async () =>{
+    console.log('=============================');
+    console.log('Creando Escolta...');
+    console.log('=============================');
+
+    Alert.alert(
+      "Confirmación de Escolta",
+      "¿Estas seguro de que los datos son correctos?",
+      [
+        {
+          text: "Cancelar",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        { text: "Confirmar", onPress: () => {
+            console.log("OK Pressed");
+            this.ActivarEscolta();
+          }
+        }
+      ],
+      { cancelable: false }
+    );
   }
 
   render() {
@@ -75,7 +115,7 @@ class Login extends React.Component {
             <Block flex middle>
               <Block style={styles.registerContainer}>
                 <Block flex space="evenly">
-                  <Block flex={0.4} middle style={styles.socialConnect}>
+                  <Block flex={0.2} middle style={styles.socialConnect}>
                     <Block flex={0.5} middle>
                       <Text
                         style={{
@@ -85,7 +125,7 @@ class Login extends React.Component {
                         color="#333"
                         size={24}
                       >
-                        Iniciar Sesión
+                        Solicitud de Escolta
                       </Text>
                     </Block>
                   </Block>
@@ -101,20 +141,34 @@ class Login extends React.Component {
                                   color="#333"
                                   size={15}
                             >
-                                Usuario
+                                Modalidad
+                            </Text>
+                          <Block width={width * 0.8} style={{ marginBottom: 5 }}>
+                          <RadioButtonRN
+                            data={data}
+                            selectedBtn={Mod => this.setState({Mod})}
+                          />
+                          </Block>
+                            <Text
+                                style={{
+                                    fontFamily: 'montserrat-regular',
+                                    textAlign: 'left'
+                                  }}
+                                  color="#333"
+                                  size={15}
+                            >
+                                Fecha
                             </Text>
                           <Block width={width * 0.8} style={{ marginBottom: 5 }}>
                             <Input
-                              placeholder="Identificación del Usuario"
+                              placeholder="DD/MM/AAAA"
                               style={styles.inputs}
-                              name="id"
-                              onChangeText={usuario => this.setState({usuario})}
-                              //onChange={handleInputChange}
+                              onChangeText={Fecha => this.setState({Fecha})}
                               iconContent={
                                 <Icon
                                   size={16}
                                   color="#ADB5BD"
-                                  name="profile-circle"
+                                  name="calendar-602x"
                                   family="NowExtra"
                                   style={styles.inputIcons}
                                 />
@@ -129,21 +183,44 @@ class Login extends React.Component {
                                   color="#333"
                                   size={15}
                             >
-                                Contraseña
+                                Hora
                             </Text>
                           <Block width={width * 0.8} style={{ marginBottom: 5 }}>
                             <Input
-                              placeholder="Contraseña"
-                              secureTextEntry={true}
-                              onChangeText={clave => this.setState({clave})}
+                              placeholder="HH:MM"
                               style={styles.inputs}
-                              name="password"
-                              //onChange={handleInputChange}
+                              onChangeText={Hora => this.setState({Hora})}
                               iconContent={
                                 <Icon
                                   size={16}
                                   color="#ADB5BD"
-                                  name="key-252x"
+                                  name="time-alarm2x"
+                                  family="NowExtra"
+                                  style={styles.inputIcons}
+                                />
+                              }
+                            />
+                          </Block>
+                          <Text
+                                style={{
+                                    fontFamily: 'montserrat-regular',
+                                    textAlign: 'left'
+                                  }}
+                                  color="#333"
+                                  size={15}
+                            >
+                                Dirección
+                            </Text>
+                          <Block width={width * 0.8} style={{ marginBottom: 5 }}>
+                            <Input
+                              placeholder="Dirección"
+                              style={styles.inputs}
+                              onChangeText={Dir => this.setState({Dir})}
+                              iconContent={
+                                <Icon
+                                  size={16}
+                                  color="#ADB5BD"
+                                  name="world2x"
                                   family="NowExtra"
                                   style={styles.inputIcons}
                                 />
@@ -152,20 +229,14 @@ class Login extends React.Component {
                           </Block>
                         </Block>
                         <Block center>
-                          <Button 
-                            color="primary" 
-                            round 
-                            style={styles.createButton}
-                            //,() => this.props.navigation.navigate('BotonAlerta')
-                            onPress={this.Login}
-                            //onPress={() => this.props.navigation.navigate('BotonAlerta')}
-                            >
+                          <Button color="primary" round style={styles.createButton}>
                             <Text
                               style={{ fontFamily: 'montserrat-bold' }}
                               size={14}
+                              onPress={this.CrearEscolta}
                               color={nowTheme.COLORS.WHITE}
                             >
-                              Iniciar Sesión
+                              Solicitar Escolta
                             </Text>
                           </Button>
                         </Block>
@@ -181,16 +252,6 @@ class Login extends React.Component {
     );
   }
 }
-//redux
-
-const mapStateToProps = (state) => {
-  const { alarma} = state
-  return { alarma }
-};
-const mapDispatchToProps = {  
-    // despacho de acciones simples
-    addUsuario,
-};
 
 const styles = StyleSheet.create({
   imageBackgroundContainer: {
@@ -270,4 +331,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default Escolta;

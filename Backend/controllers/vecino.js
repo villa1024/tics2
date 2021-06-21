@@ -85,6 +85,7 @@ const getallvecinos = async (req, res = response) => {
     }
 };
 
+<<<<<<< HEAD
 const getUnVecino = async (req, res = response) => {
     console.log('getUnVecino');
     try {
@@ -99,11 +100,23 @@ const getUnVecino = async (req, res = response) => {
                 msg: 'vecino no encontrado'
             });
         }
+=======
+const getInfoVecino = async (req, res = response) => {
+    try {
+        // Creamos la conexion a la BDD
+        const pool = await dbConecction();
+        const { id_veci} = req.params;
+        const data = await pool.query('SELECT id_veci, direccion, nombre_vecino, telefono_vecino, name_contact, numb_contact, name_contact2, numb_contact2 FROM vecino WHERE id_veci= ($1)', [id_veci]);
+>>>>>>> 9d262a2131743cedbb9e4cfe1559d97fa0be2c91
         return res.status(200).json({
             ok: true,
             data: data.rows
         });
+<<<<<<< HEAD
     } catch {
+=======
+    } catch (error) {
+>>>>>>> 9d262a2131743cedbb9e4cfe1559d97fa0be2c91
         console.log(error);
         return res.status(500).json({
             ok: false,
@@ -190,5 +203,6 @@ module.exports = {
     actualizarVecino,
     getUnVecino,
     deleteVecino,
-    actualizarPassword
+    actualizarPassword,
+    getInfoVecino
 };

@@ -1,8 +1,9 @@
 import 'react-native-gesture-handler';
-import React from 'react';
+import React,{ useState}  from 'react';
 import { StyleSheet } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import { Block, GalioProvider } from 'galio-framework';
 import AppLoading from 'expo-app-loading';
 
@@ -10,21 +11,25 @@ import AppLoading from 'expo-app-loading';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import alarmaReducer from './AlarmaReducer';
+import { connect } from 'react-redux';
 
 //componentes
 import Login from './screens/Login';
 import Intro from './screens/Intro';
 import PassChange from './screens/PassChange';
-import BotonAlerta from './screens/BotonAlerta';
+import Inicio from './screens/Inicio';
+import Escolta from './screens/Escolta';
 import Contactos from './screens/Contactos';
-import Home from './screens/Home';
 
 import * as Font from 'expo-font';
 import { Images, articles, nowTheme } from './constants';
+import { Value } from 'react-native-reanimated';
+import { addUsuario } from './AlarmaAction';
 
 //constantes
-const Stack = createStackNavigator();
+const Drawer = createDrawerNavigator();
 const store = createStore(alarmaReducer);
+
 function cacheImages(images) {
   return images.map(image => {
     if (typeof image === 'string') {
@@ -34,7 +39,6 @@ function cacheImages(images) {
     }
   });
 }
-
 export default class App extends React.Component {
   state = {
     isLoadingComplete: false,
@@ -54,34 +58,23 @@ export default class App extends React.Component {
       return (
         //provider entrega acceso a store a todos los componentes
         <Provider store={store}>
+<<<<<<< HEAD
+          {//console.log(this.getMyObject() )
+          }
+=======
+
+>>>>>>> e352f42dcb67965085ad2896bf22a325045367de
+        <GalioProvider theme={nowTheme}>
           <NavigationContainer>
-            <GalioProvider theme={nowTheme}>
-              <Block flex>
-                <Stack.Navigator>
-                  <Stack.Screen
-                    name="Intro"
-                    component={Intro}
-                  />
-                  <Stack.Screen
-                    name="Login"
-                    component={Login}
-                  />
-                  <Stack.Screen
-                    name="BotonAlerta"
-                    component={BotonAlerta}
-                  />
-                  <Stack.Screen
-                    name="PassChange"
-                    component={PassChange}
-                  />
-                  <Stack.Screen
-                    name="Contactos"
-                    component={Contactos}
-                  />
-                </Stack.Navigator>
-              </Block>
-            </GalioProvider>
+            <Drawer.Navigator>
+                  <Drawer.Screen name="Intro" component={Intro}/>
+                  <Drawer.Screen name="Login" component={Login}/>
+                  <Drawer.Screen name="Inicio" component={Inicio} />
+                  <Drawer.Screen name="Escolta" component={Escolta}/>
+                  <Drawer.Screen name="Contactos" component={Contactos}/>
+            </Drawer.Navigator>
           </NavigationContainer>
+        </GalioProvider>
         </Provider>
       );
     }
@@ -108,4 +101,10 @@ _handleFinishLoading = () => {
     this.setState({ isLoadingComplete: true });
   }
 };
+
+<<<<<<< HEAD
+=======
+
+>>>>>>> e352f42dcb67965085ad2896bf22a325045367de
+
 }
